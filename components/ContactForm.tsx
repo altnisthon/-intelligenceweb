@@ -99,7 +99,7 @@ export default function ContactForm() {
       )}
       {status === "error" && isConfigured && (
         <p className="font-sans text-xs text-purple">
-          Something went wrong sending that — mind trying again, or email hello@andintelligence.sg
+          Something went wrong sending that — mind trying again, or email andintelligencehq@gmail.com
           directly?
         </p>
       )}
