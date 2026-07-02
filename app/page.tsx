@@ -25,7 +25,7 @@ export default function HomePage() {
         <div className="relative flex flex-col justify-center overflow-hidden px-8 py-16 md:px-14 md:py-20">
           <div className="pointer-events-none absolute -bottom-[15%] -right-[15%] h-[60%] w-[60%] rounded-full bg-[radial-gradient(circle,rgba(197,241,178,0.5),transparent_70%)]" />
           <div className="relative mb-8 font-sans text-[10.5px] uppercase tracking-[0.18em] text-purple">
-            Singapore · Self-Awareness &amp; Self-Discovery
+            · Self-Awareness &amp; Self-Discovery
           </div>
           <h1 className="relative mb-7 font-serif text-[clamp(36px,5.2vw,76px)] font-bold italic leading-[1.04] tracking-tight text-plum">
             Regulate. Relate. Rise. <span className="text-purple">AND</span> know why you can.
