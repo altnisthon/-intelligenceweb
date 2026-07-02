@@ -33,7 +33,7 @@ export default function PrivacyPage() {
             with third parties for marketing purposes.
           </p>
           <p>
-            To request that your information be deleted, email hello@andintelligence.sg.
+            To request that your information be deleted, email andintelligencehq@gmail.com
           </p>
         </div>
       </Container>
