@@ -49,13 +49,19 @@ export default function Footer() {
               grounded in who you already are.
             </p>
             <div className="flex gap-[10px]">
-              {["IG", "in", "f"].map((label) => (
+              {[
+                { label: "IG", href: "https://www.instagram.com/andintelligence/" },
+                { label: "in", href: "https://linkedin.com/company/YOUR_HANDLE" },
+                { label: "f", href: "https://facebook.com/YOUR_HANDLE" },
+              ].map((social) => (
                 <a
-                  key={label}
-                  href="#"
+                  key={social.label}
+                  href={social.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="flex h-[38px] w-[38px] items-center justify-center border border-lavender-border text-[13px] text-muted no-underline transition-colors hover:border-purple hover:text-purple"
                 >
-                  {label}
+                  {social.label}
                 </a>
               ))}
             </div>
