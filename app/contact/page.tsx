@@ -8,8 +8,8 @@ export const metadata: Metadata = {
 };
 
 const INFO = [
-  { label: "Email", value: "hello@andintelligence.sg" },
-  { label: "Studio", value: "Tanjong Pagar, Singapore" },
+  { label: "Email", value: "andintelligencehq@gmail.com" },
+  { label: "Studio", value: "8 Burn Rd, Trivex" },
   { label: "Sessions", value: "In person & online" },
 ];
 
