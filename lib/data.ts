@@ -188,6 +188,6 @@ export const faqs = [
   },
   {
     q: "In person or online?",
-    a: "Both. Our studio is in Tanjong Pagar, and we run sessions online for clients across Singapore and beyond. DMIT scans are done in person or via a guided at-home kit.",
+    a: "Both. Our studio is located at 8 Burn Rd, Trivex, and we run sessions online for clients across Singapore and beyond. DMIT scans are done in person or via a guided at-home kit.",
   },
 ];
