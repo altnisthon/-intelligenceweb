@@ -1,0 +1,21 @@
+<svg viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="800" fill="#ECE6F5"/>
+  <radialGradient id="bgfade" cx="30%" cy="30%" r="70%">
+    <stop offset="0%" stop-color="#F0FAE8"/>
+    <stop offset="100%" stop-color="#ECE6F5"/>
+  </radialGradient>
+  <rect width="1200" height="800" fill="url(#bgfade)"/>
+  <g fill="none" stroke="#5b2a98" transform="translate(600,400)">
+    <ellipse rx="60" ry="82" stroke-opacity="0.85" stroke-width="4"/>
+    <ellipse rx="104" ry="136" stroke-opacity="0.7" stroke-width="4"/>
+    <ellipse rx="150" ry="192" stroke-opacity="0.58" stroke-width="4"/>
+    <ellipse rx="200" ry="254" stroke-opacity="0.46" stroke-width="4"/>
+    <ellipse rx="254" ry="316" stroke-opacity="0.34" stroke-width="4"/>
+    <ellipse rx="310" ry="378" stroke-opacity="0.22" stroke-width="4"/>
+  </g>
+  <g fill="none" stroke="#ca90dc" transform="translate(600,400)">
+    <ellipse rx="82" ry="60" stroke-opacity="0.55" stroke-width="3"/>
+    <ellipse rx="176" ry="130" stroke-opacity="0.4" stroke-width="3"/>
+    <ellipse rx="270" ry="200" stroke-opacity="0.26" stroke-width="3"/>
+  </g>
+</svg>
