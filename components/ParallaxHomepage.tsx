@@ -39,10 +39,10 @@ const HOMEPAGE_CSS = `
 
   /* ===== REVEAL-ON-SCROLL (bold: bigger travel + rotation on card rows) ===== */
   [data-reveal]{opacity:0;transform:translateY(60px);transition:opacity 1s cubic-bezier(.16,1,.3,1),transform 1s cubic-bezier(.16,1,.3,1)}
-  [data-reveal].in-view{opacity:1;transform:translateY(0) translateX(0) rotate(0deg) scale(1)}
   [data-reveal].reveal-left{transform:translateY(30px) translateX(-90px) rotate(-5deg)}
   [data-reveal].reveal-right{transform:translateY(30px) translateX(90px) rotate(5deg)}
   [data-reveal].reveal-pop{transform:translateY(40px) scale(0.85)}
+  [data-reveal].in-view{opacity:1;transform:translateY(0) translateX(0) rotate(0deg) scale(1)}
 
   /* ===== HERO (scroll-scrubbed sequence) ===== */
   .hero-scroll{position:relative;height:550vh}
@@ -175,6 +175,34 @@ const HOMEPAGE_CSS = `
   .final-cta h2{font-family:'Playfair Display',serif;font-weight:700;font-size:clamp(32px,4vw,46px);line-height:1.12;color:var(--ink);margin:0 0 1.4rem}
   .final-cta p{font:300 17px/1.8 'DM Sans',sans-serif;color:var(--text-secondary);margin:0 0 2.4rem}
   .final-glow{top:-40%;left:50%;width:130%;height:160%;background:radial-gradient(circle,rgba(202,144,220,0.26),transparent 65%);will-change:transform}
+
+  /* ===== MOBILE: disable scroll-pinned sequences, show static content instead ===== */
+  @media (max-width:768px){
+    .hero-scroll{height:auto}
+    .hero-pin{position:relative;height:auto;min-height:0;padding:5rem clamp(1.5rem,4vw,3rem) 3rem}
+    .hero-content{transform:none!important}
+    .hero-amp{opacity:1!important}
+    .hero-glow-a,.hero-glow-b{transform:none!important;filter:none!important}
+    .hs-word,.hp-pill,#heroFlyin{opacity:1!important;transform:none!important;box-shadow:none!important;text-shadow:none!important}
+
+    .wai-scroll{height:auto}
+    .wai-pin{position:relative;height:auto;padding:4rem clamp(1.5rem,4vw,3rem)}
+    .wai-stage{flex-direction:column}
+    .wai-main-content{position:relative;opacity:1!important;transform:none!important;flex-direction:column;pointer-events:auto!important}
+    .wai-shift-row{transform:none!important}
+    .wai-eyebrow,.wai-h-part1,.wai-h-part2,.wai-quote,.wai-para,.wai-card{opacity:1!important;transform:none!important}
+    .wai-figure-stage{transform:none!important;width:min(70vw,300px);height:min(70vw,300px);margin:0 auto 1.5rem}
+    .wai-img-body{opacity:1!important;clip-path:none!important}
+    .wai-img-nervous,.wai-img-heart,.wai-img-clouds{display:none!important}
+    .wai-card-slot{position:relative;height:auto}
+    .wai-card{position:relative;margin-bottom:1rem}
+    .wai-right-col{position:relative;top:auto;transform:none;width:100%;margin-top:0}
+    .wai-summary{display:none!important}
+
+    .testi-card p{opacity:1!important}
+    .testi-placeholder{display:none!important}
+    .testi-hint{display:none!important}
+  }
 
 `;
 
@@ -380,6 +408,7 @@ const HOMEPAGE_BODY = `
 const HOMEPAGE_SCRIPT = `
 
 (function(){
+  const isMobile = window.matchMedia('(max-width: 768px)').matches;
   const parallaxEls = document.querySelectorAll('.parallax-el');
 
   const heroScroll = document.getElementById('heroScroll');
@@ -590,8 +619,10 @@ const HOMEPAGE_SCRIPT = `
     const y = window.scrollY;
     const vh = window.innerHeight;
 
-    updateHero(heroProgress());
-    updateWai(pinProgress(waiScroll));
+    if (!isMobile) {
+      updateHero(heroProgress());
+      updateWai(pinProgress(waiScroll));
+    }
 
     parallaxEls.forEach(function(el){
       const speed = parseFloat(el.dataset.speed) || 0.15;
