@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Playfair_Display, DM_Sans, Cormorant_Garamond } from "next/font/google";
+import { Playfair_Display, DM_Sans, Cormorant_Garamond, Caveat } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -24,6 +24,13 @@ const cormorant = Cormorant_Garamond({
   style: ["italic"],
   weight: ["300", "400"],
   variable: "--font-cormorant",
+  display: "swap",
+});
+
+const caveat = Caveat({
+  subsets: ["latin"],
+  weight: ["500", "600"],
+  variable: "--font-caveat",
   display: "swap",
 });
 
@@ -52,7 +59,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${playfair.variable} ${dmSans.variable} ${cormorant.variable}`}>
+    <html
+      lang="en"
+      className={`${playfair.variable} ${dmSans.variable} ${cormorant.variable} ${caveat.variable}`}
+    >
       <body className="flex min-h-screen flex-col overflow-x-hidden">
         <Header />
         <main className="flex-1">{children}</main>

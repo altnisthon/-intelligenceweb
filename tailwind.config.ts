@@ -8,7 +8,8 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        bg: "#ECE6F5",
+        paper: "#faf6f0",
+        bg: "#faf6f0",
         plum: "#1e1826",
         purple: {
           DEFAULT: "#5b2a98",
@@ -17,23 +18,23 @@ const config: Config = {
         orchid: "#ca90dc",
         mint: {
           DEFAULT: "#c5f1b2",
-          light: "#F0FAE8",
+          light: "#f4f0e2",
         },
         lavender: {
-          DEFAULT: "#E8DCF5",
-          border: "#cbb8e6",
+          DEFAULT: "#f3ede2",
+          border: "#e4dccd",
         },
-        muted: "#6B5F7A",
+        muted: "#6b5f5a",
         offwhite: "#F7F5FA",
       },
       fontFamily: {
         serif: ["var(--font-playfair)", "Georgia", "serif"],
         sans: ["var(--font-dm-sans)", "system-ui", "sans-serif"],
         quote: ["var(--font-cormorant)", "Georgia", "serif"],
+        hand: ["var(--font-caveat)", "cursive"],
       },
       backgroundImage: {
-        "and-radial":
-          "radial-gradient(58vw 52vh at 80% 12%, rgba(197,241,178,0.42), transparent 60%), radial-gradient(52vw 52vh at 6% 52%, rgba(202,144,220,0.20), transparent 60%), radial-gradient(48vw 48vh at 94% 90%, rgba(197,241,178,0.34), transparent 60%)",
+        "and-radial": "none",
       },
       keyframes: {
         marquee: {
