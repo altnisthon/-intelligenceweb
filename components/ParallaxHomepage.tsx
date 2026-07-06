@@ -27,11 +27,6 @@ const HOMEPAGE_CSS = `
   [data-reveal]{opacity:0;transform:translateY(16px);transition:opacity .8s cubic-bezier(.16,1,.3,1),transform .8s cubic-bezier(.16,1,.3,1)}
   [data-reveal].in-view{opacity:1;transform:translateY(0)}
 
-  /* ===== PHOTO SLOTS: scaffolded placeholders for real/licensed photography ===== */
-  .photo-slot{position:relative;background:linear-gradient(135deg,#ece2d0,#f4eee0);display:flex;align-items:center;justify-content:center;text-align:center}
-  .photo-slot::before{content:'';position:absolute;inset:0;border:1px dashed rgba(30,24,38,0.16)}
-  .photo-slot-label{position:relative;padding:1.5rem;font:400 10.5px/1.5 'DM Sans',sans-serif;letter-spacing:.16em;text-transform:uppercase;color:var(--text-secondary);opacity:.6}
-
   /* ===== HERO: storyboarded 6-beat scroll sequence (video → logo → fingerprint →
      wordmark → Regulate/Relate/Rise photo cycle → condense + settle) ===== */
   .hero-pin-wrap{position:relative;height:550svh}
@@ -121,28 +116,50 @@ const HOMEPAGE_CSS = `
   .sparkle-br{bottom:-14px;right:-16px;color:var(--lime);animation-delay:1.4s}
   @keyframes sparklePulse{0%,100%{opacity:.35;transform:scale(.75) rotate(0deg)}50%{opacity:1;transform:scale(1.15) rotate(20deg)}}
 
-  /* ===== TESTIMONIALS ===== */
+  /* ===== TESTIMONIALS: gradient heading beat -> scroll-flown bird -> floating,
+     sparkling cards (envelope concept retired) ===== */
   .testimonials{border-top:1px solid var(--hairline)}
-  .testi-eyebrow-wrap{text-align:center;margin-bottom:2rem}
 
-  .testi-envelope{position:relative;width:200px;height:136px;margin:0 auto 1.4rem;perspective:900px;opacity:0;transform:scale(0.88);transition:opacity .5s ease,transform .5s ease}
-  .testi-envelope.env-pop{opacity:1;transform:scale(1)}
-  .env-body{position:absolute;inset:0;background:#fff;border:1.5px solid var(--ink);z-index:1;overflow:hidden}
-  .env-body::before{content:'';position:absolute;left:0;right:0;bottom:0;height:62%;background:rgba(197,241,178,0.28);clip-path:polygon(0 0,50% 68%,100% 0,100% 100%,0 100%)}
-  .env-flap{position:absolute;top:0;left:0;right:0;height:62%;background:linear-gradient(135deg,var(--indigo),var(--wisteria));clip-path:polygon(0 0,100% 0,50% 100%);transform-origin:top center;transform:rotateX(0deg);transition:transform .9s cubic-bezier(.65,0,.35,1);z-index:3}
-  .testi-envelope.env-open .env-flap{transform:rotateX(-155deg)}
-  .testi-hint{opacity:0;text-align:center;font-family:'Cormorant Garamond',serif;font-style:italic;font-size:15px;color:var(--text-secondary);margin-bottom:2rem;transition:opacity .6s ease}
-  .testi-hint.hint-show{opacity:1}
+  .testi-scene{position:relative;overflow:hidden;background:linear-gradient(170deg,var(--indigo-deep) 0%,var(--indigo) 32%,var(--wisteria) 58%,var(--wisteria) 78%,var(--paper) 100%)}
+  .testi-intro{position:relative;z-index:2;text-align:center;padding:6rem clamp(1.5rem,4vw,3rem) 1rem}
+  .testi-eyebrow-light{color:var(--lime);opacity:.9}
+  .testi-heading{width:clamp(340px,46vw,720px);filter:none;margin:0 auto}
 
-  .testi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--hairline)}
-  @media (max-width:860px){.testi-grid{grid-template-columns:1fr}}
-  .testi-card{position:relative;background:#fff;padding:2.4rem 2rem;min-height:190px;cursor:pointer;
+  .testi-bird-block{position:relative;height:clamp(220px,32vw,420px);overflow:hidden}
+  .testi-bird{position:absolute;top:50%;left:0;width:clamp(150px,20vw,300px);height:auto;transform:translate(-30%,-50%);mix-blend-mode:multiply;opacity:.92;will-change:transform}
+
+  .testi-wrap{position:relative;padding-top:5rem}
+  .testi-hint{text-align:center;font-family:'Cormorant Garamond',serif;font-style:italic;font-size:15px;color:var(--text-secondary);margin:0 0 2.6rem}
+  @media (max-width:860px){.testi-hint{display:none}}
+
+  .testi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2.4rem 2rem}
+  @media (max-width:860px){.testi-grid{grid-template-columns:1fr;gap:2.2rem}}
+
+  /* floating wrapper carries the continuous whimsical bob; the card inside it
+     keeps its own reveal-on-scroll transform, so the two never fight over the
+     same transform property. */
+  .testi-card-wrap{position:relative;animation:testiFloat 6.5s ease-in-out infinite}
+  .testi-card-wrap:nth-child(1){animation-delay:0s}
+  .testi-card-wrap:nth-child(2){animation-delay:.85s}
+  .testi-card-wrap:nth-child(3){animation-delay:1.7s}
+  @keyframes testiFloat{0%,100%{transform:translateY(0) rotate(-0.6deg)}50%{transform:translateY(-13px) rotate(0.6deg)}}
+  @media (prefers-reduced-motion:reduce){.testi-card-wrap{animation:none}}
+
+  .testi-sparkle{width:15px;height:15px;z-index:0}
+  .testi-sparkle-a{bottom:-10px;left:10%;color:var(--lime);animation-delay:.2s}
+  .testi-sparkle-b{bottom:-16px;right:16%;color:var(--wisteria);animation-delay:1.1s}
+  .testi-sparkle-c{top:-12px;right:-10px;color:var(--lime);animation-delay:.7s}
+  .testi-sparkle-d{top:20%;left:-14px;width:11px;height:11px;color:var(--wisteria);animation-delay:1.6s}
+  .testi-sparkle-e{bottom:30%;right:-16px;width:11px;height:11px;color:var(--lime);animation-delay:.45s}
+
+  .testi-card{position:relative;z-index:1;background:#fff;border-radius:16px;padding:2.4rem 2rem;min-height:190px;cursor:pointer;
+    box-shadow:0 24px 44px -18px rgba(30,24,38,0.22),0 4px 14px rgba(30,24,38,0.06);
     display:flex;flex-direction:column;
     opacity:0;transform:translateY(16px);
-    transition:opacity .7s cubic-bezier(.16,1,.3,1),transform .7s cubic-bezier(.16,1,.3,1);
+    transition:opacity .7s cubic-bezier(.16,1,.3,1),transform .7s cubic-bezier(.16,1,.3,1),box-shadow .3s ease;
   }
-  .testi-card.card-out{opacity:1;transform:translateY(0)}
-  .testi-card:hover{background:rgba(202,144,220,0.06)}
+  .testi-card.in-view{opacity:1;transform:translateY(0)}
+  .testi-card:hover{box-shadow:0 30px 54px -16px rgba(91,42,152,0.3),0 6px 18px rgba(91,42,152,0.1)}
   .quote-mark{font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:48px;color:var(--wisteria);line-height:1;margin-bottom:.6rem}
   .testi-card p{position:relative;font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:400;font-size:19px;line-height:1.55;color:var(--ink);margin:0 0 1.4rem;opacity:0;transition:opacity .35s ease}
   .testi-card:hover p{opacity:1}
@@ -150,12 +167,26 @@ const HOMEPAGE_CSS = `
   .testi-card:hover .testi-placeholder{opacity:0}
   .testi-name{margin-top:auto;padding-top:1.2rem;font:400 10px 'DM Sans',sans-serif;letter-spacing:.16em;text-transform:uppercase;color:var(--indigo)}
 
-  /* ===== FINAL CTA ===== */
+  /* mobile: no hover, quotes are always visible, floating + sparkle stay */
+  @media (max-width:860px){
+    .testi-card p{opacity:1}
+    .testi-placeholder{display:none}
+  }
+
+  /* ===== FINAL CTA: soft floating-wave gradient in the logo's lavender/mint,
+     bubble-font heading over it ===== */
   .final-cta{position:relative;overflow:hidden;text-align:center;border-top:1px solid var(--hairline)}
-  .final-cta-photo{position:absolute;inset:0;z-index:0}
-  .final-cta-photo-overlay{position:absolute;inset:0;background:rgba(250,246,240,0.88)}
+  .final-cta-bg{position:absolute;inset:0;z-index:0;overflow:hidden;background:var(--paper)}
+  .final-cta-blob{position:absolute;width:60vw;height:60vw;border-radius:50%;filter:blur(70px);opacity:.5;will-change:transform}
+  .final-cta-blob-a{left:-16vw;top:-20vw;background:radial-gradient(circle at 32% 32%,rgba(176,160,237,0.9),rgba(176,160,237,0) 70%);animation:ctaFloatA 17s ease-in-out infinite}
+  .final-cta-blob-b{right:-18vw;top:6vw;width:52vw;height:52vw;background:radial-gradient(circle at 60% 40%,rgba(154,237,182,0.85),rgba(154,237,182,0) 70%);animation:ctaFloatB 21s ease-in-out infinite}
+  .final-cta-blob-c{left:18vw;bottom:-24vw;width:50vw;height:50vw;background:radial-gradient(circle at 50% 50%,rgba(202,144,220,0.8),rgba(202,144,220,0) 70%);animation:ctaFloatC 25s ease-in-out infinite}
+  @keyframes ctaFloatA{0%,100%{transform:translate(0,0)}50%{transform:translate(5vw,4vw)}}
+  @keyframes ctaFloatB{0%,100%{transform:translate(0,0)}50%{transform:translate(-6vw,5vw)}}
+  @keyframes ctaFloatC{0%,100%{transform:translate(0,0)}50%{transform:translate(4vw,-5vw)}}
+  @media (prefers-reduced-motion:reduce){.final-cta-blob{animation:none}}
   .final-cta-inner{position:relative;z-index:1;max-width:640px;margin:0 auto;padding:9rem clamp(1.5rem,4vw,3rem)}
-  .final-cta h2{font-family:'Playfair Display',serif;font-weight:700;font-size:clamp(32px,4vw,46px);line-height:1.12;color:var(--ink);margin:0 0 1.4rem}
+  .final-cta-heading{width:clamp(300px,58vw,640px);margin:0 auto 1.6rem;filter:none}
   .final-cta p{font:300 17px/1.8 'DM Sans',sans-serif;color:var(--text-secondary);margin:0 0 2.4rem}
 
   /* ===== MOBILE: same 6-beat sequence as desktop, just resized to stay legible ===== */
@@ -286,37 +317,60 @@ const HOMEPAGE_BODY = `
   </div>
 </section>
 
-<!-- TESTIMONIALS -->
+<!-- TESTIMONIALS: gradient heading -> bird flies across on scroll -> floating sparkly cards -->
 <section class="testimonials" id="testimonialsSection">
-  <div class="section-wrap">
-    <div class="testi-eyebrow-wrap">
-      <div class="section-eyebrow" data-reveal>In Their Words</div>
+  <div class="testi-scene">
+    <div class="testi-intro" data-reveal>
+      <div class="section-eyebrow testi-eyebrow-light">In Their Words</div>
+      <img class="bubble-heading testi-heading" src="/hero/other-like-you-said.png" alt="And this is what others like you have said">
     </div>
-
-    <div class="testi-envelope" id="testiEnvelope">
-      <div class="env-body"></div>
-      <div class="env-flap"></div>
+    <div class="testi-bird-block" id="testiBirdBlock">
+      <img class="testi-bird" id="testiBird" src="/hero/bird.png" alt="">
     </div>
-    <div class="testi-hint" id="testiHint">Hover a card to read what they shared</div>
+  </div>
 
-    <div class="testi-grid" id="testiGrid">
-      <div class="testi-card" id="testiCard1">
-        <div class="quote-mark">"</div>
-        <div class="testi-placeholder">A message from Rachel — hover to read</div>
-        <p>The profile didn't box me in — it gave me permission. I stopped fighting my own instincts.</p>
-        <div class="testi-name">Rachel · Young Adult journey</div>
+  <div class="section-wrap testi-wrap">
+    <p class="testi-hint" data-reveal>Hover a card to read what they shared</p>
+
+    <div class="testi-grid">
+      <div class="testi-card-wrap">
+        <svg class="sparkle testi-sparkle testi-sparkle-a" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 0 L14.5 9.5 L24 12 L14.5 14.5 L12 24 L9.5 14.5 L0 12 L9.5 9.5 Z"/></svg>
+        <svg class="sparkle testi-sparkle testi-sparkle-b" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 0 L14.5 9.5 L24 12 L14.5 14.5 L12 24 L9.5 14.5 L0 12 L9.5 9.5 Z"/></svg>
+        <svg class="sparkle testi-sparkle testi-sparkle-c" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 0 L14.5 9.5 L24 12 L14.5 14.5 L12 24 L9.5 14.5 L0 12 L9.5 9.5 Z"/></svg>
+        <svg class="sparkle testi-sparkle testi-sparkle-d" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 0 L14.5 9.5 L24 12 L14.5 14.5 L12 24 L9.5 14.5 L0 12 L9.5 9.5 Z"/></svg>
+        <svg class="sparkle testi-sparkle testi-sparkle-e" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 0 L14.5 9.5 L24 12 L14.5 14.5 L12 24 L9.5 14.5 L0 12 L9.5 9.5 Z"/></svg>
+        <div class="testi-card" data-reveal>
+          <div class="quote-mark">"</div>
+          <div class="testi-placeholder">A message from Rachel — hover to read</div>
+          <p>The profile didn't box me in — it gave me permission. I stopped fighting my own instincts.</p>
+          <div class="testi-name">Rachel · Young Adult journey</div>
+        </div>
       </div>
-      <div class="testi-card" id="testiCard2">
-        <div class="quote-mark">"</div>
-        <div class="testi-placeholder">A message from Mei Ling — hover to read</div>
-        <p>My son went from shutting down to explaining what he needed. That is not a small thing.</p>
-        <div class="testi-name">Mei Ling · Parent, Youth journey</div>
+      <div class="testi-card-wrap">
+        <svg class="sparkle testi-sparkle testi-sparkle-a" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 0 L14.5 9.5 L24 12 L14.5 14.5 L12 24 L9.5 14.5 L0 12 L9.5 9.5 Z"/></svg>
+        <svg class="sparkle testi-sparkle testi-sparkle-b" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 0 L14.5 9.5 L24 12 L14.5 14.5 L12 24 L9.5 14.5 L0 12 L9.5 9.5 Z"/></svg>
+        <svg class="sparkle testi-sparkle testi-sparkle-c" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 0 L14.5 9.5 L24 12 L14.5 14.5 L12 24 L9.5 14.5 L0 12 L9.5 9.5 Z"/></svg>
+        <svg class="sparkle testi-sparkle testi-sparkle-d" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 0 L14.5 9.5 L24 12 L14.5 14.5 L12 24 L9.5 14.5 L0 12 L9.5 9.5 Z"/></svg>
+        <svg class="sparkle testi-sparkle testi-sparkle-e" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 0 L14.5 9.5 L24 12 L14.5 14.5 L12 24 L9.5 14.5 L0 12 L9.5 9.5 Z"/></svg>
+        <div class="testi-card" data-reveal>
+          <div class="quote-mark">"</div>
+          <div class="testi-placeholder">A message from Mei Ling — hover to read</div>
+          <p>My son went from shutting down to explaining what he needed. That is not a small thing.</p>
+          <div class="testi-name">Mei Ling · Parent, Youth journey</div>
+        </div>
       </div>
-      <div class="testi-card" id="testiCard3">
-        <div class="quote-mark">"</div>
-        <div class="testi-placeholder">A message from David — hover to read</div>
-        <p>Honest, warm, and never once made me feel like a project. I felt taken seriously.</p>
-        <div class="testi-name">David · Mid-Life journey</div>
+      <div class="testi-card-wrap">
+        <svg class="sparkle testi-sparkle testi-sparkle-a" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 0 L14.5 9.5 L24 12 L14.5 14.5 L12 24 L9.5 14.5 L0 12 L9.5 9.5 Z"/></svg>
+        <svg class="sparkle testi-sparkle testi-sparkle-b" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 0 L14.5 9.5 L24 12 L14.5 14.5 L12 24 L9.5 14.5 L0 12 L9.5 9.5 Z"/></svg>
+        <svg class="sparkle testi-sparkle testi-sparkle-c" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 0 L14.5 9.5 L24 12 L14.5 14.5 L12 24 L9.5 14.5 L0 12 L9.5 9.5 Z"/></svg>
+        <svg class="sparkle testi-sparkle testi-sparkle-d" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 0 L14.5 9.5 L24 12 L14.5 14.5 L12 24 L9.5 14.5 L0 12 L9.5 9.5 Z"/></svg>
+        <svg class="sparkle testi-sparkle testi-sparkle-e" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 0 L14.5 9.5 L24 12 L14.5 14.5 L12 24 L9.5 14.5 L0 12 L9.5 9.5 Z"/></svg>
+        <div class="testi-card" data-reveal>
+          <div class="quote-mark">"</div>
+          <div class="testi-placeholder">A message from David — hover to read</div>
+          <p>Honest, warm, and never once made me feel like a project. I felt taken seriously.</p>
+          <div class="testi-name">David · Mid-Life journey</div>
+        </div>
       </div>
     </div>
   </div>
@@ -324,12 +378,13 @@ const HOMEPAGE_BODY = `
 
 <!-- FINAL CTA -->
 <section class="final-cta" id="finalCtaSection">
-  <div class="photo-slot photo-treatment final-cta-photo">
-    <div class="photo-slot-label">Photo — quiet, still, a single caught moment</div>
+  <div class="final-cta-bg" aria-hidden="true">
+    <span class="final-cta-blob final-cta-blob-a"></span>
+    <span class="final-cta-blob final-cta-blob-b"></span>
+    <span class="final-cta-blob final-cta-blob-c"></span>
   </div>
-  <div class="final-cta-photo-overlay"></div>
   <div class="final-cta-inner">
-    <h2 data-reveal>Start with understanding. Everything else follows.</h2>
+    <img class="bubble-heading final-cta-heading" src="/hero/start-with-understanding.png" alt="Start with understanding. Everything else follows." data-reveal>
     <p data-reveal>Begin with an introductory conversation. No commitment, no assessment to prepare for — just a first honest conversation about where you are.</p>
     <a href="/contact" class="btn-primary" data-reveal>Begin the Conversation</a>
   </div>
@@ -445,30 +500,59 @@ const HOMEPAGE_SCRIPT = `
     heroScrollPrompt.style.opacity = String(promptFade);
   }
 
-  // Who We Serve: the big background "01/02/03" numbers drift upward at a
-  // slower rate than the page itself as you scroll past — a contained
-  // parallax within each card (clipped by the card's own overflow:hidden).
+  // Who We Serve: the big background "01/02/03" numbers fly upward through
+  // each card as you scroll past — they start below the card's resting spot
+  // (as if rising in from underneath) and exit off the top, clipped by the
+  // card's own overflow:hidden, so they appear to launch up into the card.
   const serveNums = document.querySelectorAll('.serve-num');
   function updateServeParallax(){
+    const vh = window.innerHeight;
     serveNums.forEach(function(el){
       // base the offset on the card's own rect, not the number's — the
       // number already has a transform applied, so reading its own rect
       // would feed each frame's output back into itself and compound.
       const card = el.closest('.serve-card');
       const rect = card.getBoundingClientRect();
-      const offset = rect.top * -0.15;
+      const total = rect.height + vh;
+      const traveled = vh - rect.top;
+      const progress = Math.min(1, Math.max(0, traveled / total));
+      const offset = 170 - progress * 400;
       el.style.transform = 'translateY(' + offset.toFixed(1) + 'px)';
     });
   }
 
+  // Testimonials: the paper bird flies from off-screen left to off-screen
+  // right as its block scrolls through the viewport, with a light bob/rotate
+  // to sell the "flying" illusion. mix-blend-mode:multiply (in CSS) drops the
+  // bird PNG's white background so it reads on the gradient below.
+  const testiBirdBlock = document.getElementById('testiBirdBlock');
+  const testiBird = document.getElementById('testiBird');
+  function updateBirdFlight(){
+    if (!testiBirdBlock || !testiBird) return;
+    const rect = testiBirdBlock.getBoundingClientRect();
+    const vh = window.innerHeight;
+    const total = rect.height + vh;
+    const traveled = vh - rect.top;
+    const rawProgress = Math.min(1, Math.max(0, traveled / total));
+    // speed up the crossing itself: the bird completes its flight in the
+    // first ~55% of the block's scroll-through, then holds off-screen right
+    // for the remainder, instead of taking the whole scroll range to cross.
+    const progress = Math.min(1, rawProgress * 1.8);
+    const xPercent = -30 + progress * 160;
+    const bob = Math.sin(progress * Math.PI * 3) * 14;
+    const rotate = Math.sin(progress * Math.PI * 3) * 6;
+    testiBird.style.transform = 'translate(' + xPercent.toFixed(1) + '%, calc(-50% + ' + bob.toFixed(1) + 'px)) rotate(' + rotate.toFixed(1) + 'deg)';
+  }
+
   let ticking = false;
   function onScroll(){
-    if (!ticking){ requestAnimationFrame(function(){ updateHero(); updateServeParallax(); ticking = false; }); ticking = true; }
+    if (!ticking){ requestAnimationFrame(function(){ updateHero(); updateServeParallax(); updateBirdFlight(); ticking = false; }); ticking = true; }
   }
   window.addEventListener('scroll', onScroll, { passive: true });
   window.addEventListener('resize', updateHero);
   updateHero();
   updateServeParallax();
+  updateBirdFlight();
 
   // left-edge dot nav: highlight whichever homepage section is in view
   const dotsNav = document.getElementById('dotsNav');
@@ -513,37 +597,10 @@ const HOMEPAGE_SCRIPT = `
 
   revealEls.forEach(function(el){ io.observe(el); });
 
-  // testimonials: envelope pops, opens, then the 3 cards fade/rise in one by one
-  const testiEnvelope = document.getElementById('testiEnvelope');
-  const testiHint = document.getElementById('testiHint');
-  const testiCards = [
-    document.getElementById('testiCard1'),
-    document.getElementById('testiCard2'),
-    document.getElementById('testiCard3')
-  ];
-  const testiGrid = document.getElementById('testiGrid');
-
-  const testiIo = new IntersectionObserver(function(entries){
-    entries.forEach(function(entry){
-      if (!entry.isIntersecting) return;
-      testiIo.unobserve(entry.target);
-
-      testiEnvelope.classList.add('env-pop');
-      setTimeout(function(){ testiEnvelope.classList.add('env-open'); }, 450);
-      testiCards.forEach(function(card, i){
-        setTimeout(function(){ card.classList.add('card-out'); }, 800 + i * 150);
-      });
-      setTimeout(function(){ testiHint.classList.add('hint-show'); }, 800 + testiCards.length * 150 + 400);
-    });
-  }, { threshold: 0.35 });
-
-  testiIo.observe(testiGrid);
-
   window.__heroTeardown = function(){
     window.removeEventListener('scroll', onScroll);
     window.removeEventListener('resize', updateHero);
     io.disconnect();
-    testiIo.disconnect();
     if (dotIo) { dotIo.disconnect(); }
   };
 })();
