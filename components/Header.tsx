@@ -5,10 +5,9 @@ import Link from "next/link";
 import Logo from "./Logo";
 
 const NAV_LINKS = [
-  { href: "/trainings", label: "Trainings" },
+  { href: "/trainings", label: "Sessions/Workshop" },
   { href: "/how-it-works", label: "How It Works" },
   { href: "/dmit", label: "About DMIT" },
-  { href: "/contact", label: "Contact" },
 ];
 
 export default function Header() {

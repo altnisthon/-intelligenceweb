@@ -42,7 +42,13 @@ export default function Footer() {
                 height={32}
                 style={{ height: "34px", width: "auto" }}
               />
-              <span className="font-serif text-[28px] font-black italic text-purple">AND</span>
+              <Image
+                src="/footer-and.png"
+                alt="AND"
+                width={338}
+                height={156}
+                style={{ height: "30px", width: "auto" }}
+              />
             </div>
             <p className="mb-7 max-w-[20rem] font-sans text-sm font-light leading-[1.75] text-muted">
               A Singapore practice for self-discovery, resilience and emotional intelligence —

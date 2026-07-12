@@ -93,40 +93,76 @@ const HOMEPAGE_CSS = `
   .about-video-content{position:relative;z-index:2;max-width:38rem;margin:0 auto;padding:7rem clamp(1.5rem,4vw,3rem)}
   .about-video-block .bubble-heading{filter:none}
   .about-video-block .about-para{color:var(--paper);opacity:.92}
-  .about-transition{font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:300;font-size:clamp(20px,2.6vw,28px);color:var(--text-secondary);margin:0 0 3rem}
-  .wws-heading{max-width:24rem;margin:0 auto 3rem;text-align:center}
-  .serve-stack{display:flex;flex-direction:column;gap:1px;background:var(--hairline);text-align:left}
-  .serve-card{position:relative;background:#fff;border-left:4px solid transparent;padding:2.6rem;overflow:hidden;transition:background .3s ease,border-left-color .3s ease}
-  .serve-card:hover{background:rgba(197,241,178,0.14);border-left-color:var(--lime)}
-  .serve-num{position:absolute;top:-2rem;right:2rem;font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:170px;color:rgba(91,42,152,0.06);line-height:1;pointer-events:none;opacity:0;transition:opacity 1s cubic-bezier(.16,1,.3,1) .15s;will-change:transform}
-  .serve-card.in-view .serve-num{opacity:1}
-  .serve-body{position:relative;max-width:38rem}
-  .serve-eyebrow{font:400 10px 'DM Sans',sans-serif;letter-spacing:.18em;text-transform:uppercase;color:var(--indigo);margin-bottom:1rem}
-  .wave-label{display:inline-block;animation:wordWave 2.4s ease-in-out infinite}
-  .serve-card:nth-child(1) .wave-label{animation-delay:0s}
-  .serve-card:nth-child(2) .wave-label{animation-delay:.25s}
-  .serve-card:nth-child(3) .wave-label{animation-delay:.5s}
-  .serve-title{font-family:'Playfair Display',serif;font-weight:700;font-size:26px;color:var(--ink);margin-bottom:.9rem}
-  .serve-card p{font:300 16px/1.8 'DM Sans',sans-serif;color:var(--text-secondary);margin:0}
-  .wws-cta{margin-top:2.5rem;text-align:center}
-  .cta-sparkle-wrap{position:relative;display:inline-block}
+  .and-then-heading{filter:none}
+
+  /* ===== A PRACTICE FOR THE WHOLE HUMAN BEING: pinned scroll-scrub — the body
+     drawing wipes in top-to-bottom (head -> toes) while the 7 words rise up
+     one after another, then the stage crossfades into the Regulate/Relate/Rise
+     photo+copy pairs (one visible at a time), same pin mechanic as the hero. ===== */
+  .practice-pin-wrap{position:relative;height:420svh}
+  .practice-pin{position:sticky;top:0;height:100svh;overflow:hidden}
+  .practice-stage{position:relative;width:100%;height:100%}
+
+  .practice-body-group{position:absolute;inset:0;display:flex;align-items:center;justify-content:center}
+  .practice-figure{position:relative;width:min(90vw,900px);height:min(78vh,760px)}
+  .practice-body-clip{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;overflow:hidden}
+  .practice-body-img{height:100%;width:auto;display:block}
+  .practice-word-layer{position:absolute;inset:0;pointer-events:none}
+  .practice-word{position:absolute;opacity:0;font-family:'Playfair Display',serif;font-weight:400;color:#000;white-space:nowrap;will-change:transform}
+  .practice-word-a{top:0;left:16%;font-size:clamp(30px,4.6vw,64px)}
+  .practice-word-practice{top:0;right:14%;font-size:clamp(30px,4.6vw,64px)}
+  .practice-word-for{top:32%;left:8%;font-size:clamp(30px,4.6vw,64px)}
+  .practice-word-the{top:32%;right:10%;font-size:clamp(30px,4.6vw,64px)}
+  .practice-word-whole{top:58%;left:4%;font-size:clamp(30px,4.6vw,64px)}
+  .practice-word-human{top:58%;right:6%;font-size:clamp(30px,4.6vw,64px)}
+  .practice-word-being{bottom:2%;left:50%;font-size:clamp(30px,4.6vw,64px)}
+
+  .practice-pair-stage{position:absolute;inset:0;display:flex;align-items:center;justify-content:center}
+  .practice-pair-item{position:absolute;display:flex;align-items:center;gap:3rem;opacity:0;max-width:1100px;width:100%;padding:0 clamp(1.5rem,4vw,3rem)}
+  .practice-pair-photo{flex:0 0 clamp(380px,53vw,646px);border-radius:16px;overflow:hidden}
+  .practice-pair-photo img{display:block;width:100%;height:auto}
+  .practice-pair-copy{flex:1}
+  .practice-pair-label{font-family:'Playfair Display',serif;font-weight:700;font-size:clamp(28px,3.4vw,40px);color:var(--ink);margin-bottom:.8rem;display:inline-block}
+  .practice-pair-copy p{font:300 17px/1.8 'DM Sans',sans-serif;color:var(--text-secondary);margin:0}
+
+  /* wavy marquee banner — full-bleed, edge to edge, independent of the
+     centered photo+copy pair so it can span the whole screen and sit lower,
+     a continuous unmasked loop (no fade) across the entire viewport width. */
+  .practice-marquee-stage{position:absolute;inset:0}
+  .practice-marquee{position:absolute;top:84%;left:0;width:100%;overflow:hidden;padding:.2rem 0;opacity:0}
+  .practice-marquee-track{display:inline-flex;animation:and-marquee 20s linear infinite}
+  .practice-wave-svg{display:block}
+
+  @media (max-width:640px){
+    .practice-figure{width:92vw;height:min(58vh,480px)}
+    .practice-pair-item{flex-direction:column;text-align:center;gap:1.5rem}
+    .practice-pair-photo{flex:0 0 auto;width:85%}
+  }
+
   .sparkle{position:absolute;width:16px;height:16px;pointer-events:none;animation:sparklePulse 2.4s ease-in-out infinite}
-  .sparkle-tl{top:-16px;left:-22px;color:var(--lime);animation-delay:0s}
-  .sparkle-tr{top:-18px;right:-24px;color:var(--wisteria);animation-delay:.7s}
-  .sparkle-br{bottom:-14px;right:-16px;color:var(--lime);animation-delay:1.4s}
   @keyframes sparklePulse{0%,100%{opacity:.35;transform:scale(.75) rotate(0deg)}50%{opacity:1;transform:scale(1.15) rotate(20deg)}}
 
   /* ===== TESTIMONIALS: gradient heading beat -> scroll-flown bird -> floating,
      sparkling cards (envelope concept retired) ===== */
-  .testimonials{border-top:1px solid var(--hairline)}
+  .testimonials{}
 
-  .testi-scene{position:relative;overflow:hidden;background:linear-gradient(170deg,var(--indigo-deep) 0%,var(--indigo) 32%,var(--wisteria) 58%,var(--wisteria) 78%,var(--paper) 100%)}
+  .testi-scene{position:relative;overflow:hidden;background:var(--paper)}
+  .testi-scene::before{
+    content:'';position:absolute;inset:0;z-index:0;pointer-events:none;
+    background:
+      radial-gradient(50% 42% at 18% 8%, rgba(91,42,152,0.30), transparent 72%),
+      radial-gradient(46% 38% at 82% 22%, rgba(202,144,220,0.26), transparent 72%),
+      radial-gradient(55% 48% at 38% 62%, rgba(61,26,110,0.20), transparent 74%),
+      radial-gradient(44% 36% at 88% 84%, rgba(202,144,220,0.24), transparent 72%),
+      radial-gradient(50% 42% at 8% 92%, rgba(91,42,152,0.18), transparent 74%);
+    filter:blur(6px);
+  }
   .testi-intro{position:relative;z-index:2;text-align:center;padding:6rem clamp(1.5rem,4vw,3rem) 1rem}
-  .testi-eyebrow-light{color:var(--lime);opacity:.9}
-  .testi-heading{width:clamp(340px,46vw,720px);filter:none;margin:0 auto}
+  .testi-eyebrow-light{color:var(--indigo);opacity:.9}
+  .testi-heading{width:clamp(340px,46vw,720px);margin:0 auto}
 
-  .testi-bird-block{position:relative;height:clamp(220px,32vw,420px);overflow:hidden}
-  .testi-bird{position:absolute;top:50%;left:0;width:clamp(150px,20vw,300px);height:auto;transform:translate(-30%,-50%);mix-blend-mode:multiply;opacity:.92;will-change:transform}
+  .testi-bird-block{position:relative;z-index:1;height:clamp(220px,32vw,420px);overflow:hidden}
+  .testi-bird{position:absolute;top:35%;left:-15%;width:clamp(150px,20vw,300px);height:auto;transform:translate(-50%,-50%);will-change:left,transform}
 
   .testi-wrap{position:relative;padding-top:5rem}
   .testi-hint{text-align:center;font-family:'Cormorant Garamond',serif;font-style:italic;font-size:15px;color:var(--text-secondary);margin:0 0 2.6rem}
@@ -173,18 +209,9 @@ const HOMEPAGE_CSS = `
     .testi-placeholder{display:none}
   }
 
-  /* ===== FINAL CTA: soft floating-wave gradient in the logo's lavender/mint,
-     bubble-font heading over it ===== */
-  .final-cta{position:relative;overflow:hidden;text-align:center;border-top:1px solid var(--hairline)}
-  .final-cta-bg{position:absolute;inset:0;z-index:0;overflow:hidden;background:var(--paper)}
-  .final-cta-blob{position:absolute;width:60vw;height:60vw;border-radius:50%;filter:blur(70px);opacity:.5;will-change:transform}
-  .final-cta-blob-a{left:-16vw;top:-20vw;background:radial-gradient(circle at 32% 32%,rgba(176,160,237,0.9),rgba(176,160,237,0) 70%);animation:ctaFloatA 17s ease-in-out infinite}
-  .final-cta-blob-b{right:-18vw;top:6vw;width:52vw;height:52vw;background:radial-gradient(circle at 60% 40%,rgba(154,237,182,0.85),rgba(154,237,182,0) 70%);animation:ctaFloatB 21s ease-in-out infinite}
-  .final-cta-blob-c{left:18vw;bottom:-24vw;width:50vw;height:50vw;background:radial-gradient(circle at 50% 50%,rgba(202,144,220,0.8),rgba(202,144,220,0) 70%);animation:ctaFloatC 25s ease-in-out infinite}
-  @keyframes ctaFloatA{0%,100%{transform:translate(0,0)}50%{transform:translate(5vw,4vw)}}
-  @keyframes ctaFloatB{0%,100%{transform:translate(0,0)}50%{transform:translate(-6vw,5vw)}}
-  @keyframes ctaFloatC{0%,100%{transform:translate(0,0)}50%{transform:translate(4vw,-5vw)}}
-  @media (prefers-reduced-motion:reduce){.final-cta-blob{animation:none}}
+  /* ===== FINAL CTA: no special background of its own now — falls back to
+     the sitewide default lavender/mint wash, same as any other plain section ===== */
+  .final-cta{position:relative;overflow:hidden;text-align:center}
   .final-cta-inner{position:relative;z-index:1;max-width:640px;margin:0 auto;padding:9rem clamp(1.5rem,4vw,3rem)}
   .final-cta-heading{width:clamp(300px,58vw,640px);margin:0 auto 1.6rem;filter:none}
   .final-cta p{font:300 17px/1.8 'DM Sans',sans-serif;color:var(--text-secondary);margin:0 0 2.4rem}
@@ -219,7 +246,7 @@ const HOMEPAGE_BODY = `
 <section class="hero-pin-wrap" id="heroSection">
   <div class="hero-pin" id="heroPin">
     <div class="hero-stage">
-      <video class="hero-video" id="heroVideo" muted playsinline preload="auto" src="/hero/frame-1.mp4"></video>
+      <video class="hero-video" id="heroVideo" muted playsinline preload="auto" src="/hero/hero-video.mp4"></video>
 
       <div class="hero-r-photos" id="heroRPhotos">
         <img class="hero-r-photo" id="heroRegulatePhoto" src="/hero/regulate.png" alt="">
@@ -231,7 +258,7 @@ const HOMEPAGE_BODY = `
 
       <img class="hero-stage-img hero-logo" id="heroLogo" src="/images/and-logo.png" alt="">
       <img class="hero-stage-img hero-fingerprint" id="heroFingerprint" src="/hero/fingerprint.png" alt="">
-      <img class="hero-stage-img hero-wordmark" id="heroWordmark" src="/hero/and-intelligence-wordmark.png" alt="AND Intelligence">
+      <img class="hero-stage-img hero-wordmark" id="heroWordmark" src="/hero/and-intelligence-wordmark-new.png" alt="AND Intelligence">
 
       <div class="hero-r-content" id="heroRContent">
         <img class="hero-r-word-img hero-wordmark" id="heroRWordImg" src="/hero/regulate-word.png" alt="Regulate">
@@ -253,8 +280,8 @@ const HOMEPAGE_BODY = `
 <!-- MARQUEE -->
 <section class="marquee-wrap">
   <div class="and-mq">
-    <span>Self-Awareness<i>•</i>Self-Discovery<i>•</i>Emotional Intelligence<i>•</i>Inner Resilience<i>•</i>Self-Regulation<i>•</i>DMIT — Innate Intelligence<i>•</i>Singapore<i>•</i></span>
-    <span>Self-Awareness<i>•</i>Self-Discovery<i>•</i>Emotional Intelligence<i>•</i>Inner Resilience<i>•</i>Self-Regulation<i>•</i>DMIT — Innate Intelligence<i>•</i>Singapore<i>•</i></span>
+    <span>Self-Awareness<i>•</i>Self-Discovery<i>•</i>Emotional Intelligence<i>•</i>Inner Resilience<i>•</i>Self-Regulation<i>•</i>DMIT — Innate Intelligence<i>•</i></span>
+    <span>Self-Awareness<i>•</i>Self-Discovery<i>•</i>Emotional Intelligence<i>•</i>Inner Resilience<i>•</i>Self-Regulation<i>•</i>DMIT — Innate Intelligence<i>•</i></span>
   </div>
 </section>
 
@@ -265,56 +292,69 @@ const HOMEPAGE_BODY = `
     <div class="about-video-overlay"></div>
     <div class="about-video-content">
       <img class="bubble-heading" src="/hero/and-what.png" alt="And... What?">
-      <p class="about-para" data-reveal>Most self-help starts with what you want to change. We start with how you are built. AND sits at the intersection of self-awareness, resilience training and DMIT, a fingerprint-based intelligence profiling; because lasting change comes from working <em>with</em> your nature, not against it.</p>
-      <p class="about-para" data-reveal>Every conversation is honest, specific and quietly confident. No jargon, no bootcamp intensity, no promises of a fixed self. Just a clearer picture of who you are — and the practical self-awareness to act on it.</p>
+      <p class="about-para" data-reveal>Most self-help starts with what you want to change. We start with how you are built. AND sits at the intersection of self-awareness, resilience training &amp; DMIT, a fingerprint-based intelligence profiling; because lasting change comes from working <em>with</em> your nature, not against it.</p>
+      <p class="about-para" data-reveal>Every conversation is honest, specific &amp; quietly confident. No jargon, no bootcamp intensity, no promises of a fixed self. Just a clearer picture of who you are — &amp; the practical self-awareness to act on it.</p>
     </div>
   </div>
 
   <div class="section-wrap">
     <div class="about-beat about-beat-b">
-      <img class="bubble-heading" src="/hero/and-then-what.png" alt="And then what?" data-reveal>
-      <p class="about-transition" data-reveal>Well&hellip; you <span class="accent-mark">become<svg class="accent-underline" viewBox="0 0 200 20" preserveAspectRatio="none" aria-hidden="true"><path d="M4,14 C60,6 140,6 196,14"/></svg></span></p>
-
-      <div class="wws-heading">
-        <div class="section-eyebrow" data-reveal>Who We Serve</div>
-        <h2 class="section-h2" data-reveal>Different seasons of <em>becoming</em>.</h2>
-      </div>
-      <div class="serve-stack">
-        <div class="serve-card" data-reveal>
-          <div class="serve-num">01</div>
-          <div class="serve-body">
-            <div class="serve-eyebrow"><span class="wave-label">Youth</span> · Ages 14–19</div>
-            <div class="serve-title">Finding footing before the world speeds up</div>
-            <p>Identity, pressure, and the first real decisions about who to become. We give teenagers language for what they feel and evidence of what they're capable of.</p>
-          </div>
-        </div>
-        <div class="serve-card" data-reveal>
-          <div class="serve-num">02</div>
-          <div class="serve-body">
-            <div class="serve-eyebrow"><span class="wave-label">Young Adults</span> · 20–35</div>
-            <div class="serve-title">Building a life on your own terms</div>
-            <p>Career, relationships, and the quiet question of whether you're living your own life or someone else's expectations.</p>
-          </div>
-        </div>
-        <div class="serve-card" data-reveal>
-          <div class="serve-num">03</div>
-          <div class="serve-body">
-            <div class="serve-eyebrow"><span class="wave-label">Mid-Life</span> · 35–55</div>
-            <div class="serve-title">Reassessing without starting over</div>
-            <p>The successful, restless middle — where the goal shifts from achieving more to living more deliberately with what matters.</p>
-          </div>
-        </div>
-      </div>
-      <div class="wws-cta" data-reveal>
-        <span class="cta-sparkle-wrap">
-          <svg class="sparkle sparkle-tl" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 0 L14.5 9.5 L24 12 L14.5 14.5 L12 24 L9.5 14.5 L0 12 L9.5 9.5 Z"/></svg>
-          <svg class="sparkle sparkle-tr" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 0 L14.5 9.5 L24 12 L14.5 14.5 L12 24 L9.5 14.5 L0 12 L9.5 9.5 Z"/></svg>
-          <svg class="sparkle sparkle-br" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 0 L14.5 9.5 L24 12 L14.5 14.5 L12 24 L9.5 14.5 L0 12 L9.5 9.5 Z"/></svg>
-          <a href="/trainings" class="btn-secondary">See All Trainings</a>
-        </span>
-      </div>
+      <img class="bubble-heading and-then-heading" src="/hero/and-then-what-black.png" alt="And then what?" data-reveal>
     </div>
   </div>
+
+  <section class="practice-pin-wrap" id="practiceSection">
+    <div class="practice-pin" id="practicePin">
+      <div class="practice-stage">
+        <div class="practice-body-group" id="practiceBodyGroup">
+          <div class="practice-figure">
+            <div class="practice-body-clip" id="practiceBodyClip">
+              <img class="practice-body-img" src="/hero/body.png" alt="">
+            </div>
+            <div class="practice-word-layer">
+              <span class="practice-word practice-word-a" id="pwA">A</span>
+              <span class="practice-word practice-word-practice" id="pwPractice">Practice</span>
+              <span class="practice-word practice-word-for" id="pwFor">for</span>
+              <span class="practice-word practice-word-the" id="pwThe">the</span>
+              <span class="practice-word practice-word-whole" id="pwWhole">whole</span>
+              <span class="practice-word practice-word-human" id="pwHuman">human</span>
+              <span class="practice-word practice-word-being" id="pwBeing">being</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="practice-marquee-stage">
+          <div class="practice-marquee" id="practiceMarquee1" aria-hidden="true"><div class="practice-marquee-track" id="marqueeRegulate"></div></div>
+          <div class="practice-marquee" id="practiceMarquee2" aria-hidden="true"><div class="practice-marquee-track" id="marqueeRelate"></div></div>
+          <div class="practice-marquee" id="practiceMarquee3" aria-hidden="true"><div class="practice-marquee-track" id="marqueeRise"></div></div>
+        </div>
+
+        <div class="practice-pair-stage">
+          <div class="practice-pair-item" id="practicePair1">
+            <div class="practice-pair-photo"><img src="/hero/blood.png" alt=""></div>
+            <div class="practice-pair-copy">
+              <span class="practice-pair-label">Regulate</span>
+              <p>Your nervous system is the operating layer beneath every reaction. Learn to notice it, name it, and steady it before it steers you.</p>
+            </div>
+          </div>
+          <div class="practice-pair-item" id="practicePair2">
+            <div class="practice-pair-photo"><img src="/hero/heart.png" alt=""></div>
+            <div class="practice-pair-copy">
+              <span class="practice-pair-label">Relate</span>
+              <p>Every relationship is shaped by how safe your body feels first. Understanding your own wiring changes how you show up for others.</p>
+            </div>
+          </div>
+          <div class="practice-pair-item" id="practicePair3">
+            <div class="practice-pair-photo"><img src="/hero/head.png" alt=""></div>
+            <div class="practice-pair-copy">
+              <span class="practice-pair-label">Rise</span>
+              <p>Growth isn't about becoming someone new. It's about growing into the version of yourself your wiring already supports.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 </section>
 
 <!-- TESTIMONIALS: gradient heading -> bird flies across on scroll -> floating sparkly cards -->
@@ -322,7 +362,7 @@ const HOMEPAGE_BODY = `
   <div class="testi-scene">
     <div class="testi-intro" data-reveal>
       <div class="section-eyebrow testi-eyebrow-light">In Their Words</div>
-      <img class="bubble-heading testi-heading" src="/hero/other-like-you-said.png" alt="And this is what others like you have said">
+      <img class="bubble-heading testi-heading" src="/hero/others-think.png" alt="And this is what others like you have said">
     </div>
     <div class="testi-bird-block" id="testiBirdBlock">
       <img class="testi-bird" id="testiBird" src="/hero/bird.png" alt="">
@@ -378,11 +418,6 @@ const HOMEPAGE_BODY = `
 
 <!-- FINAL CTA -->
 <section class="final-cta" id="finalCtaSection">
-  <div class="final-cta-bg" aria-hidden="true">
-    <span class="final-cta-blob final-cta-blob-a"></span>
-    <span class="final-cta-blob final-cta-blob-b"></span>
-    <span class="final-cta-blob final-cta-blob-c"></span>
-  </div>
   <div class="final-cta-inner">
     <img class="bubble-heading final-cta-heading" src="/hero/start-with-understanding.png" alt="Start with understanding. Everything else follows." data-reveal>
     <p data-reveal>Begin with an introductory conversation. No commitment, no assessment to prepare for — just a first honest conversation about where you are.</p>
@@ -500,31 +535,87 @@ const HOMEPAGE_SCRIPT = `
     heroScrollPrompt.style.opacity = String(promptFade);
   }
 
-  // Who We Serve: the big background "01/02/03" numbers fly upward through
-  // each card as you scroll past — they start below the card's resting spot
-  // (as if rising in from underneath) and exit off the top, clipped by the
-  // card's own overflow:hidden, so they appear to launch up into the card.
-  const serveNums = document.querySelectorAll('.serve-num');
-  function updateServeParallax(){
-    const vh = window.innerHeight;
-    serveNums.forEach(function(el){
-      // base the offset on the card's own rect, not the number's — the
-      // number already has a transform applied, so reading its own rect
-      // would feed each frame's output back into itself and compound.
-      const card = el.closest('.serve-card');
-      const rect = card.getBoundingClientRect();
-      const total = rect.height + vh;
-      const traveled = vh - rect.top;
-      const progress = Math.min(1, Math.max(0, traveled / total));
-      const offset = 170 - progress * 400;
-      el.style.transform = 'translateY(' + offset.toFixed(1) + 'px)';
-    });
+  // A PRACTICE FOR THE WHOLE HUMAN BEING: pinned scroll-scrub, same mechanic
+  // as the hero — the body drawing wipes in top-to-bottom (head -> toes) via
+  // clip-path while the 7 words rise up one after another, then the whole
+  // stage crossfades into the Regulate/Relate/Rise photo+copy pairs, one
+  // visible at a time (mirrors the hero's R-photo crossfade pattern).
+  const practiceSection = document.getElementById('practiceSection');
+  const practiceBodyClip = document.getElementById('practiceBodyClip');
+  const practiceBodyGroup = document.getElementById('practiceBodyGroup');
+  const practiceWordSegs = [
+    ['pwA', 0.03, 0.09, false],
+    ['pwPractice', 0.08, 0.14, false],
+    ['pwFor', 0.13, 0.19, false],
+    ['pwThe', 0.18, 0.24, false],
+    ['pwWhole', 0.23, 0.29, false],
+    ['pwHuman', 0.28, 0.34, false],
+    ['pwBeing', 0.33, 0.39, true]
+  ];
+  const practiceWordEls = practiceWordSegs.map(function(w){
+    return { el: document.getElementById(w[0]), from: w[1], to: w[2], center: w[3] };
+  });
+  const practicePair1 = document.getElementById('practicePair1');
+  const practicePair2 = document.getElementById('practicePair2');
+  const practicePair3 = document.getElementById('practicePair3');
+  const practiceMarquee1 = document.getElementById('practiceMarquee1');
+  const practiceMarquee2 = document.getElementById('practiceMarquee2');
+  const practiceMarquee3 = document.getElementById('practiceMarquee3');
+
+  function practicePinProgress(){
+    if (!practiceSection) return 0;
+    const top = practiceSection.offsetTop;
+    const range = practiceSection.offsetHeight - window.innerHeight;
+    if (range <= 0) return 0;
+    const raw = (window.scrollY - top) / range;
+    return Math.min(1, Math.max(0, raw));
   }
 
-  // Testimonials: the paper bird flies from off-screen left to off-screen
-  // right as its block scrolls through the viewport, with a light bob/rotate
-  // to sell the "flying" illusion. mix-blend-mode:multiply (in CSS) drops the
-  // bird PNG's white background so it reads on the gradient below.
+  function updatePractice(){
+    if (!practiceSection) return;
+    const p = practicePinProgress();
+
+    // body wipes in from head to toes as the section pins
+    const bodyProgress = seg(p, 0.02, 0.40);
+    if (practiceBodyClip) {
+      practiceBodyClip.style.clipPath = 'inset(0 0 ' + ((1 - bodyProgress) * 100).toFixed(1) + '% 0)';
+    }
+
+    // the 7 words rise up into place one after another
+    practiceWordEls.forEach(function(w){
+      if (!w.el) return;
+      const wp = seg(p, w.from, w.to);
+      w.el.style.opacity = String(wp);
+      const rise = (1 - wp) * 26;
+      w.el.style.transform = (w.center ? 'translateX(-50%) ' : '') + 'translateY(' + rise.toFixed(1) + 'px)';
+    });
+
+    // body + words fade out as the practice pairs take over
+    if (practiceBodyGroup) {
+      practiceBodyGroup.style.opacity = String(Math.max(0, 1 - seg(p, 0.40, 0.46)));
+    }
+
+    // Regulate/Relate/Rise pairs cycle one at a time, same crossfade pattern
+    // as the hero's Regulate/Relate/Rise R-photos.
+    const pair1Opacity = seg(p, 0.48, 0.53) - seg(p, 0.65, 0.69);
+    const pair2Opacity = seg(p, 0.65, 0.70) - seg(p, 0.83, 0.87);
+    const pair3Opacity = seg(p, 0.83, 0.88);
+    if (practicePair1) practicePair1.style.opacity = String(Math.max(0, pair1Opacity));
+    if (practicePair2) practicePair2.style.opacity = String(Math.max(0, pair2Opacity));
+    if (practicePair3) practicePair3.style.opacity = String(pair3Opacity);
+    if (practiceMarquee1) practiceMarquee1.style.opacity = String(Math.max(0, pair1Opacity));
+    if (practiceMarquee2) practiceMarquee2.style.opacity = String(Math.max(0, pair2Opacity));
+    if (practiceMarquee3) practiceMarquee3.style.opacity = String(pair3Opacity);
+  }
+
+  // Testimonials: the bird flies from fully off-screen left to fully
+  // off-screen right across the whole width of its block, with a light
+  // bob/rotate to sell the "flying" illusion. Position is driven via the
+  // left CSS property as a percentage of the block's own width (not a
+  // transform translate relative to the bird's own small size), so the
+  // flight path is genuinely edge-to-edge regardless of viewport width.
+  // The new bird.png has real alpha transparency, so no mix-blend-mode
+  // trick is needed anymore.
   const testiBirdBlock = document.getElementById('testiBirdBlock');
   const testiBird = document.getElementById('testiBird');
   function updateBirdFlight(){
@@ -534,24 +625,66 @@ const HOMEPAGE_SCRIPT = `
     const total = rect.height + vh;
     const traveled = vh - rect.top;
     const rawProgress = Math.min(1, Math.max(0, traveled / total));
-    // speed up the crossing itself: the bird completes its flight in the
-    // first ~55% of the block's scroll-through, then holds off-screen right
-    // for the remainder, instead of taking the whole scroll range to cross.
-    const progress = Math.min(1, rawProgress * 1.8);
-    const xPercent = -30 + progress * 160;
-    const bob = Math.sin(progress * Math.PI * 3) * 14;
-    const rotate = Math.sin(progress * Math.PI * 3) * 6;
-    testiBird.style.transform = 'translate(' + xPercent.toFixed(1) + '%, calc(-50% + ' + bob.toFixed(1) + 'px)) rotate(' + rotate.toFixed(1) + 'deg)';
+    // crossing speed: 30% slower than the previous 2.8x multiplier.
+    const progress = Math.min(1, rawProgress * 1.96);
+    const leftPercent = -15 + progress * 130;
+    const bob = Math.sin(progress * Math.PI * 4) * 14;
+    const rotate = Math.sin(progress * Math.PI * 4) * 6;
+    testiBird.style.left = leftPercent.toFixed(1) + '%';
+    testiBird.style.transform = 'translate(-50%, calc(-50% + ' + bob.toFixed(1) + 'px)) rotate(' + rotate.toFixed(1) + 'deg)';
   }
 
   let ticking = false;
   function onScroll(){
-    if (!ticking){ requestAnimationFrame(function(){ updateHero(); updateServeParallax(); updateBirdFlight(); ticking = false; }); ticking = true; }
+    if (!ticking){ requestAnimationFrame(function(){ updateHero(); updatePractice(); updateBirdFlight(); ticking = false; }); ticking = true; }
   }
   window.addEventListener('scroll', onScroll, { passive: true });
   window.addEventListener('resize', updateHero);
+  window.addEventListener('resize', updatePractice);
+  // build each pair's marquee: the text itself follows a wavy SVG path (via
+  // textPath), not just bobbing words on a flat line — two identical copies
+  // sit side by side so the and-marquee -50% translate loops seamlessly.
+  function buildWavePathD(totalWidth, baseline, amplitude, period){
+    let d = 'M0,' + baseline;
+    let x = 0;
+    let up = true;
+    while (x < totalWidth) {
+      const midX = x + period / 2;
+      const midY = up ? baseline - amplitude : baseline + amplitude;
+      const endX = x + period;
+      d += ' Q' + midX + ',' + midY + ' ' + endX + ',' + baseline;
+      x = endX;
+      up = !up;
+    }
+    return d;
+  }
+
+  function buildWaveMarquee(id, word, color){
+    const track = document.getElementById(id);
+    if (!track) return;
+    const totalWidth = 2400;
+    const baseline = 50;
+    const amplitude = 26;
+    const period = 260;
+    const height = 110;
+    const d = buildWavePathD(totalWidth, baseline, amplitude, period);
+    const text = (word + ' • ').repeat(14);
+    function svgFor(pathId){
+      return '<svg class="practice-wave-svg" width="' + totalWidth + '" height="' + height + '" viewBox="0 0 ' + totalWidth + ' ' + height + '" xmlns="http://www.w3.org/2000/svg">' +
+        '<path id="' + pathId + '" d="' + d + '" fill="none"></path>' +
+        '<text font-family="Playfair Display, serif" font-style="italic" font-weight="700" font-size="34" fill="' + color + '" letter-spacing="1">' +
+        '<textPath href="#' + pathId + '" startOffset="0">' + text + '</textPath>' +
+        '</text>' +
+        '</svg>';
+    }
+    track.innerHTML = svgFor(id + '-path-a') + svgFor(id + '-path-b');
+  }
+  buildWaveMarquee('marqueeRegulate', 'Regulate', '#5b2a98');
+  buildWaveMarquee('marqueeRelate', 'Relate', '#5b2a98');
+  buildWaveMarquee('marqueeRise', 'Rise', '#5b2a98');
+
   updateHero();
-  updateServeParallax();
+  updatePractice();
   updateBirdFlight();
 
   // left-edge dot nav: highlight whichever homepage section is in view
@@ -580,8 +713,8 @@ const HOMEPAGE_SCRIPT = `
     sections.forEach(function(section){ dotIo.observe(section); });
   }
 
-  // reveal-on-scroll for section content and the hand-lettered accent underline
-  const revealEls = document.querySelectorAll('[data-reveal], .accent-mark');
+  // reveal-on-scroll for section content
+  const revealEls = document.querySelectorAll('[data-reveal]');
   revealEls.forEach(function(el, i){
     el.style.transitionDelay = (i % 4) * 90 + 'ms';
   });
@@ -600,6 +733,7 @@ const HOMEPAGE_SCRIPT = `
   window.__heroTeardown = function(){
     window.removeEventListener('scroll', onScroll);
     window.removeEventListener('resize', updateHero);
+    window.removeEventListener('resize', updatePractice);
     io.disconnect();
     if (dotIo) { dotIo.disconnect(); }
   };

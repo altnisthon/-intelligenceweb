@@ -12,13 +12,14 @@ export default function Logo({ dark = false }: { dark?: boolean }) {
         style={{ height: "30px", width: "auto" }}
         priority
       />
-      <span
-        className={`font-sans text-xs font-normal uppercase tracking-[0.28em] ${
-          dark ? "text-offwhite" : "text-plum"
-        }`}
-      >
-        AND Intelligence
-      </span>
+      <Image
+        src="/header-and.png"
+        alt="AND Intelligence"
+        width={1014}
+        height={122}
+        style={{ height: "14px", width: "auto", filter: dark ? "none" : "invert(1)" }}
+        priority
+      />
     </Link>
   );
 }

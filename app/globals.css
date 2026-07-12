@@ -8,7 +8,13 @@
   }
 
   body {
-    @apply relative bg-paper text-plum font-sans antialiased;
+    @apply relative text-plum font-sans antialiased;
+    background-color: #faf6f0;
+    background-image:
+      radial-gradient(1100px circle at 8% 0%, rgba(176, 160, 237, 0.12), transparent 55%),
+      radial-gradient(1100px circle at 92% 100%, rgba(154, 237, 182, 0.12), transparent 55%);
+    background-repeat: no-repeat, no-repeat;
+    background-attachment: fixed, fixed;
   }
 
   body::after {
