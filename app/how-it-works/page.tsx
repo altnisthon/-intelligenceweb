@@ -47,7 +47,7 @@ export default function HowItWorksPage() {
         <div className="mb-4 font-sans text-[10.5px] uppercase tracking-[0.18em] text-purple">
           Who We Serve
         </div>
-        <h2 className="mb-12 max-w-[24rem] font-serif text-[clamp(30px,4vw,50px)] font-bold leading-[1.08] text-plum">
+        <h2 className="mb-12 max-w-[24rem] font-quote text-[clamp(30px,4vw,50px)] font-semibold leading-[1.08] text-plum">
           Different seasons of <span className="italic text-purple">becoming</span>.
         </h2>
         <div className="flex flex-col gap-[1.5px]">

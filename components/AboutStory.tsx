@@ -364,7 +364,7 @@ export default function AboutStory() {
               The Founder
             </Reveal>
             <Reveal delay={80}>
-              <h2 className="mb-6 font-serif text-[clamp(28px,4vw,42px)] font-bold leading-[1.1] text-plum">
+              <h2 className="mb-6 font-quote text-[clamp(28px,4vw,42px)] font-semibold leading-[1.1] text-plum">
                 A note from the founder.
               </h2>
             </Reveal>
