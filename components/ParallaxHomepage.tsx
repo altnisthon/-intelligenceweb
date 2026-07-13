@@ -118,12 +118,16 @@ const HOMEPAGE_CSS = `
   .practice-word-being{bottom:2%;left:50%;font-size:clamp(30px,4.6vw,64px)}
 
   .practice-pair-stage{position:absolute;inset:0;display:flex;align-items:center;justify-content:center}
-  .practice-pair-item{position:absolute;display:flex;align-items:center;gap:3rem;opacity:0;max-width:1100px;width:100%;padding:0 clamp(1.5rem,4vw,3rem)}
-  .practice-pair-photo{flex:0 0 clamp(380px,53vw,646px);border-radius:16px;overflow:hidden}
+  .practice-pair-item{position:absolute;display:flex;align-items:center;gap:2.75rem;opacity:0;max-width:1280px;width:100%;padding:0 clamp(1.5rem,4vw,3rem)}
+  .practice-pair-photo{flex:0 0 clamp(440px,60vw,760px);border-radius:16px;overflow:hidden}
   .practice-pair-photo img{display:block;width:100%;height:auto}
-  .practice-pair-copy{flex:1}
-  .practice-pair-label{font-family:'Playfair Display',serif;font-weight:700;font-size:clamp(28px,3.4vw,40px);color:var(--ink);margin-bottom:.8rem;display:inline-block}
-  .practice-pair-copy p{font:300 17px/1.8 'DM Sans',sans-serif;color:var(--text-secondary);margin:0}
+  .practice-pair-copy{flex:1;min-width:0;max-height:min(64vh,540px);overflow-y:auto;padding-right:.75rem;scrollbar-width:thin;scrollbar-color:var(--indigo) transparent}
+  .practice-pair-copy::-webkit-scrollbar{width:5px}
+  .practice-pair-copy::-webkit-scrollbar-thumb{background:var(--indigo);opacity:.4;border-radius:3px}
+  .practice-pair-num{display:block;font:400 12px 'DM Sans',sans-serif;letter-spacing:.18em;text-transform:uppercase;color:var(--indigo);opacity:.75;margin-bottom:.4rem}
+  .practice-pair-label{font-family:'Playfair Display',serif;font-weight:700;font-size:clamp(26px,3.1vw,36px);color:var(--ink);margin-bottom:1rem;display:inline-block}
+  .practice-pair-copy p{font:300 15.5px/1.75 'DM Sans',sans-serif;color:var(--text-secondary);margin:0 0 1rem}
+  .practice-pair-copy p:last-child{margin-bottom:0}
 
   /* wavy marquee banner — full-bleed, edge to edge, independent of the
      centered photo+copy pair so it can span the whole screen and sit lower,
@@ -135,8 +139,10 @@ const HOMEPAGE_CSS = `
 
   @media (max-width:640px){
     .practice-figure{width:92vw;height:min(58vh,480px)}
-    .practice-pair-item{flex-direction:column;text-align:center;gap:1.5rem}
-    .practice-pair-photo{flex:0 0 auto;width:85%}
+    .practice-pair-item{flex-direction:column;text-align:center;gap:1.25rem}
+    .practice-pair-photo{flex:0 0 auto;width:88%}
+    .practice-pair-copy{max-height:min(38vh,300px);padding-right:0}
+    .practice-pair-copy p{text-align:left;font-size:14.5px}
   }
 
   .sparkle{position:absolute;width:16px;height:16px;pointer-events:none;animation:sparklePulse 2.4s ease-in-out infinite}
@@ -333,22 +339,31 @@ const HOMEPAGE_BODY = `
           <div class="practice-pair-item" id="practicePair1">
             <div class="practice-pair-photo"><img src="/hero/blood.png" alt=""></div>
             <div class="practice-pair-copy">
+              <span class="practice-pair-num">01</span>
               <span class="practice-pair-label">Regulate</span>
-              <p>Your nervous system is the operating layer beneath every reaction. Learn to notice it, name it, and steady it before it steers you.</p>
+              <p>Everything starts here, because nothing else works without it. When your nervous system is braced for threat - overwhelmed, reactive, flooded - the thinking, feeling parts of you go quiet. You can't connect well, decide well, or grow from that place. Regulate is the skill of coming back: noticing your own signals early and returning yourself to steady ground before the storm makes your choices for you.</p>
+              <p>It's worth being clear about what this isn't. Regulation isn't forcing yourself to be calm, and it isn't numbing what you feel. It's the opposite; it's feeling clearly enough to respond on purpose rather than on reflex. The work is quiet and practical: learning your early warning signs, knowing your particular triggers, and finding the specific routes back to calm that actually work for you. That last part matters, because the generic advice ("just breathe") lands differently depending on how you're built. This is where your DMIT profile earns its place, it shows how you take in and process the world, so your way back to steady is tailored to your wiring, not borrowed from someone else's.</p>
+              <p>Master this and you've built the foundation the other two stages stand on. Skip it, and every relationship and every ambition ends up running on an unstable base.</p>
             </div>
           </div>
           <div class="practice-pair-item" id="practicePair2">
             <div class="practice-pair-photo"><img src="/hero/heart.png" alt=""></div>
             <div class="practice-pair-copy">
+              <span class="practice-pair-num">02</span>
               <span class="practice-pair-label">Relate</span>
-              <p>Every relationship is shaped by how safe your body feels first. Understanding your own wiring changes how you show up for others.</p>
+              <p>Once you can steady yourself, you can finally be with people, not managing your own storm while half-listening to theirs. Relate is the outward turn: meeting others as they actually are, rather than as your fears or old patterns assume them to be.</p>
+              <p>Here's the quiet truth underneath it: most relational friction isn't really about the other person. It's our own reactivity colliding with theirs. When you're regulated, you see people more accurately, because you're no longer looking through the distortion of your own threat response. That's what makes connection possible, not charisma or technique, but presence. The work looks like listening to understand instead of to reply, catching the story you're telling about someone before you act on it, and communicating what you need without armour. And because how we connect is deeply individual, understanding your own relational wiring - how you naturally give, receive, and express - turns connection from anxious guesswork into something you can navigate with far less self-blame.</p>
+              <p>This stage matters because relationships are the medium of nearly everything that gives life weight: your work, your family, your love. Relational skill compounds quietly over decades. And it's reciprocal by design, you were never meant to rise alone.</p>
             </div>
           </div>
           <div class="practice-pair-item" id="practicePair3">
             <div class="practice-pair-photo"><img src="/hero/head.png" alt=""></div>
             <div class="practice-pair-copy">
+              <span class="practice-pair-num">03</span>
               <span class="practice-pair-label">Rise</span>
-              <p>Growth isn't about becoming someone new. It's about growing into the version of yourself your wiring already supports.</p>
+              <p>From a steady self and honest relationships, growth stops being a grind. Rise is where the whole journey points forward, where you take your natural strengths and use them deliberately, in your work, your choices, and the direction you set for your life.</p>
+              <p>We hold this word carefully. Rising isn't climbing over other people, and it isn't chasing a polished, optimised version of you that doesn't exist. It's directional, not comparative, a return to who you already are, lived more fully and on purpose. That's why it lasts: growth that runs along the grain of your nature doesn't depend on willpower to sustain it, the way borrowed ambitions always do. The work is learning where your innate strengths actually lie, then aligning your direction with them and quietly letting go of definitions of success you were handed rather than chose. This is the moment your DMIT profile becomes less a mirror and more a compass.</p>
+              <p>And this stage is what gives the other two a point. Regulation and connection without direction just make you a calm, well-related person drifting; Rise is what turns steadiness and belonging into a life that's actually going somewhere: yours.</p>
             </div>
           </div>
         </div>
@@ -668,7 +683,14 @@ const HOMEPAGE_SCRIPT = `
     const period = 260;
     const height = 110;
     const d = buildWavePathD(totalWidth, baseline, amplitude, period);
-    const text = (word + ' • ').repeat(14);
+    // Repeat the word enough times to safely overflow the wavy path's actual
+    // length (always a bit longer than totalWidth) — text beyond a
+    // textPath's length simply isn't rendered, so over-repeating is safe and
+    // guarantees no blank gap at the loop seam, however short the word is.
+    const unit = word + ' • ';
+    const approxCharWidth = 22; // px, italic Playfair Display 700 @ 34px incl. letter-spacing
+    const repeats = Math.max(12, Math.ceil((totalWidth * 1.6) / (unit.length * approxCharWidth)));
+    const text = unit.repeat(repeats);
     function svgFor(pathId){
       return '<svg class="practice-wave-svg" width="' + totalWidth + '" height="' + height + '" viewBox="0 0 ' + totalWidth + ' ' + height + '" xmlns="http://www.w3.org/2000/svg">' +
         '<path id="' + pathId + '" d="' + d + '" fill="none"></path>' +
