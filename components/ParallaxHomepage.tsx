@@ -118,30 +118,37 @@ const HOMEPAGE_CSS = `
   .practice-word-being{bottom:2%;left:50%;font-size:clamp(30px,4.6vw,64px)}
 
   .practice-pair-stage{position:absolute;inset:0;display:flex;align-items:center;justify-content:center}
-  .practice-pair-item{position:absolute;display:flex;align-items:center;gap:2.75rem;opacity:0;max-width:1280px;width:100%;padding:0 clamp(1.5rem,4vw,3rem)}
-  .practice-pair-photo{flex:0 0 clamp(440px,60vw,760px);border-radius:16px;overflow:hidden}
+  /* pointer-events:none by default: the three pairs are stacked in the exact
+     same spot and only cross-fade via opacity — an invisible (opacity:0)
+     sibling still fully captures wheel/pointer events unless disabled, which
+     stole scroll input meant for the visible pair's copy box. JS flips this
+     to 'auto' only on the currently-visible pair, alongside its opacity. */
+  .practice-pair-item{position:absolute;display:flex;align-items:center;gap:1.5rem;opacity:0;pointer-events:none;max-width:1360px;width:100%;padding:0 clamp(1.5rem,4vw,3rem)}
+  .practice-pair-photo{flex:0 0 clamp(260px,30vw,380px);border-radius:16px;overflow:hidden}
   .practice-pair-photo img{display:block;width:100%;height:auto}
-  .practice-pair-copy{flex:1;min-width:0;max-height:min(64vh,540px);overflow-y:auto;padding-right:.75rem;scrollbar-width:thin;scrollbar-color:var(--indigo) transparent}
+  .practice-pair-copy{flex:1;min-width:0;max-height:min(76vh,640px);overflow-y:auto;overscroll-behavior:contain;padding-right:.75rem;scrollbar-width:thin;scrollbar-color:var(--indigo) transparent}
   .practice-pair-copy::-webkit-scrollbar{width:5px}
   .practice-pair-copy::-webkit-scrollbar-thumb{background:var(--indigo);opacity:.4;border-radius:3px}
   .practice-pair-num{display:block;font:400 12px 'DM Sans',sans-serif;letter-spacing:.18em;text-transform:uppercase;color:var(--indigo);opacity:.75;margin-bottom:.4rem}
   .practice-pair-label{font-family:'Playfair Display',serif;font-weight:700;font-size:clamp(26px,3.1vw,36px);color:var(--ink);margin-bottom:1rem;display:inline-block}
-  .practice-pair-copy p{font:300 15.5px/1.75 'DM Sans',sans-serif;color:var(--text-secondary);margin:0 0 1rem}
+  .practice-pair-copy p{font:300 15.5px/1.7 'DM Sans',sans-serif;color:var(--text-secondary);margin:0 0 1rem}
   .practice-pair-copy p:last-child{margin-bottom:0}
 
   /* wavy marquee banner — full-bleed, edge to edge, independent of the
      centered photo+copy pair so it can span the whole screen and sit lower,
-     a continuous unmasked loop (no fade) across the entire viewport width. */
-  .practice-marquee-stage{position:absolute;inset:0}
+     a continuous unmasked loop (no fade) across the entire viewport width.
+     Purely decorative — never intercept scroll/pointer input meant for the
+     copy box above it. */
+  .practice-marquee-stage{position:absolute;inset:0;pointer-events:none}
   .practice-marquee{position:absolute;top:84%;left:0;width:100%;overflow:hidden;padding:.2rem 0;opacity:0}
   .practice-marquee-track{display:inline-flex;animation:and-marquee 20s linear infinite}
   .practice-wave-svg{display:block}
 
   @media (max-width:640px){
     .practice-figure{width:92vw;height:min(58vh,480px)}
-    .practice-pair-item{flex-direction:column;text-align:center;gap:1.25rem}
-    .practice-pair-photo{flex:0 0 auto;width:88%}
-    .practice-pair-copy{max-height:min(38vh,300px);padding-right:0}
+    .practice-pair-item{flex-direction:column;text-align:center;gap:.85rem}
+    .practice-pair-photo{flex:0 0 auto;width:58%}
+    .practice-pair-copy{max-height:min(52vh,440px);padding-right:0}
     .practice-pair-copy p{text-align:left;font-size:14.5px}
   }
 
@@ -615,9 +622,21 @@ const HOMEPAGE_SCRIPT = `
     const pair1Opacity = seg(p, 0.48, 0.53) - seg(p, 0.65, 0.69);
     const pair2Opacity = seg(p, 0.65, 0.70) - seg(p, 0.83, 0.87);
     const pair3Opacity = seg(p, 0.83, 0.88);
-    if (practicePair1) practicePair1.style.opacity = String(Math.max(0, pair1Opacity));
-    if (practicePair2) practicePair2.style.opacity = String(Math.max(0, pair2Opacity));
-    if (practicePair3) practicePair3.style.opacity = String(pair3Opacity);
+    // Only the pair that's actually visible should receive wheel/pointer
+    // input — otherwise a fully-faded (opacity 0) sibling stacked in the
+    // same spot silently eats scroll input meant for the visible one.
+    if (practicePair1) {
+      practicePair1.style.opacity = String(Math.max(0, pair1Opacity));
+      practicePair1.style.pointerEvents = pair1Opacity > 0.5 ? 'auto' : 'none';
+    }
+    if (practicePair2) {
+      practicePair2.style.opacity = String(Math.max(0, pair2Opacity));
+      practicePair2.style.pointerEvents = pair2Opacity > 0.5 ? 'auto' : 'none';
+    }
+    if (practicePair3) {
+      practicePair3.style.opacity = String(pair3Opacity);
+      practicePair3.style.pointerEvents = pair3Opacity > 0.5 ? 'auto' : 'none';
+    }
     if (practiceMarquee1) practiceMarquee1.style.opacity = String(Math.max(0, pair1Opacity));
     if (practiceMarquee2) practiceMarquee2.style.opacity = String(Math.max(0, pair2Opacity));
     if (practiceMarquee3) practiceMarquee3.style.opacity = String(pair3Opacity);
