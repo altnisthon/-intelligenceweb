@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Container from "@/components/Container";
 import CtaLink from "@/components/CtaLink";
 
@@ -15,8 +16,16 @@ export default function AboutPage() {
           <div className="mb-4 font-sans text-[10.5px] uppercase tracking-[0.18em] text-purple">
             Our Story
           </div>
-          <h1 className="mb-8 font-serif text-[clamp(30px,4vw,50px)] font-bold leading-[1.08] text-plum">
-            Why <span className="italic text-purple">AND</span> exists.
+          <h1 className="mb-8 flex flex-wrap items-center gap-x-3 font-serif text-[clamp(30px,4vw,50px)] font-bold leading-[1.08] text-plum">
+            Why
+            <Image
+              src="/footer-and.png"
+              alt="AND"
+              width={338}
+              height={156}
+              style={{ height: "0.75em", width: "auto" }}
+            />
+            exists.
           </h1>
           <div className="flex flex-col gap-6 font-sans text-lg font-light leading-[1.85] text-muted">
             <p>We have never had more information about people. Yet we&apos;ve never understood each other less.</p>
