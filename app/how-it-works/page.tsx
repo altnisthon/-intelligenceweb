@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 
 export default function HowItWorksPage() {
   return (
-    <>
+    <div className="mist-page">
     <section className="px-6 py-24 md:px-10">
       <Container>
         <div className="mb-4 font-sans text-[10.5px] uppercase tracking-[0.18em] text-purple">
@@ -101,6 +101,6 @@ export default function HowItWorksPage() {
         </div>
       </Container>
     </section>
-    </>
+    </div>
   );
 }

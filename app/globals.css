@@ -41,6 +41,29 @@
     -webkit-backdrop-filter: blur(8px);
   }
 
+  /* Same soft indigo/wisteria mist used behind the homepage testimonials
+     ("...others like you have said") section, reused here as a full-page
+     backdrop. position:fixed so it reads as one continuous mist behind
+     every section on the page, not a per-section tile. */
+  .mist-page {
+    position: relative;
+  }
+
+  .mist-page::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background:
+      radial-gradient(50% 42% at 18% 8%, rgba(91, 42, 152, 0.3), transparent 72%),
+      radial-gradient(46% 38% at 82% 22%, rgba(202, 144, 220, 0.26), transparent 72%),
+      radial-gradient(55% 48% at 38% 62%, rgba(61, 26, 110, 0.2), transparent 74%),
+      radial-gradient(44% 36% at 88% 84%, rgba(202, 144, 220, 0.24), transparent 72%),
+      radial-gradient(50% 42% at 8% 92%, rgba(91, 42, 152, 0.18), transparent 74%);
+    filter: blur(6px);
+  }
+
   .eyebrow {
     @apply font-sans text-[10.5px] font-normal uppercase tracking-[0.18em] text-purple;
   }

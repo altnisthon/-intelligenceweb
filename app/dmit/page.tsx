@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 
 export default function DmitPage() {
   return (
-    <section className="px-6 py-24 md:px-10">
+    <section className="mist-page px-6 py-24 md:px-10">
       <Container className="grid grid-cols-1 items-center gap-16 md:grid-cols-2">
         <div>
           <div className="mb-5 font-sans text-[10.5px] uppercase tracking-[0.18em] text-purple">
