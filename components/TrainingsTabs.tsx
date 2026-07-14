@@ -34,7 +34,7 @@ export default function TrainingsTabs() {
           const key = `${tab}-${p.name}`;
           const isOpen = !!expanded[key];
           return (
-            <div key={p.name} className="bg-white/66 transition-colors hover:bg-white/90">
+            <div key={p.name} className="bg-white/60 backdrop-blur-md transition-colors hover:bg-white/90">
               <div className="flex flex-col items-start gap-5 p-6 sm:flex-row sm:items-center md:p-9">
                 <div className="flex h-14 w-14 flex-none items-center justify-center bg-purple/10 font-serif text-xl font-black text-purple">
                   {p.badge}
