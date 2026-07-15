@@ -55,21 +55,33 @@ export default function Footer() {
               grounded in who you already are.
             </p>
             <div className="flex gap-[10px]">
-              {[
-                { label: "IG", href: "https://www.instagram.com/andintelligence/" },
-                { label: "in", href: "https://linkedin.com/company/YOUR_HANDLE" },
-                { label: "f", href: "https://facebook.com/YOUR_HANDLE" },
-              ].map((social) => (
-                <a
-                  key={social.label}
-                  href={social.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex h-[38px] w-[38px] items-center justify-center border border-lavender-border text-[13px] text-muted no-underline transition-colors hover:border-purple hover:text-purple"
+              <a
+                href="https://www.instagram.com/andintelligence/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex h-[38px] w-[38px] items-center justify-center border border-lavender-border text-[13px] text-muted no-underline transition-colors hover:border-purple hover:text-purple"
+              >
+                IG
+              </a>
+              <a
+                href="mailto:andintelligencehq@gmail.com"
+                aria-label="Email AND Intelligence"
+                className="flex h-[38px] w-[38px] items-center justify-center border border-lavender-border text-muted no-underline transition-colors hover:border-purple hover:text-purple"
+              >
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.6"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                 >
-                  {social.label}
-                </a>
-              ))}
+                  <rect x="2.5" y="4.5" width="19" height="15" rx="1.5" />
+                  <path d="M3.5 5.5L12 13L20.5 5.5" />
+                </svg>
+              </a>
             </div>
           </div>
 

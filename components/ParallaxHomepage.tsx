@@ -123,10 +123,10 @@ const HOMEPAGE_CSS = `
      sibling still fully captures wheel/pointer events unless disabled, which
      stole scroll input meant for the visible pair's copy box. JS flips this
      to 'auto' only on the currently-visible pair, alongside its opacity. */
-  .practice-pair-item{position:absolute;display:flex;align-items:center;gap:1.5rem;opacity:0;pointer-events:none;max-width:1360px;width:100%;padding:0 clamp(1.5rem,4vw,3rem)}
-  .practice-pair-photo{flex:0 0 clamp(260px,30vw,380px);border-radius:16px;overflow:hidden}
+  .practice-pair-item{position:absolute;display:flex;align-items:center;gap:2.5rem;opacity:0;pointer-events:none;max-width:1680px;width:100%;padding:0 clamp(1.5rem,4vw,3rem)}
+  .practice-pair-photo{flex:0 0 clamp(380px,44vw,620px);border-radius:16px;overflow:hidden}
   .practice-pair-photo img{display:block;width:100%;height:auto}
-  .practice-pair-copy{flex:1;min-width:0;max-height:min(76vh,640px);overflow-y:auto;overscroll-behavior:contain;padding-right:.75rem;scrollbar-width:thin;scrollbar-color:var(--indigo) transparent}
+  .practice-pair-copy{flex:1;min-width:0;max-height:min(82vh,680px);overflow-y:auto;overscroll-behavior:contain;padding-right:.75rem;scrollbar-width:thin;scrollbar-color:var(--indigo) transparent}
   .practice-pair-copy::-webkit-scrollbar{width:5px}
   .practice-pair-copy::-webkit-scrollbar-thumb{background:var(--indigo);opacity:.4;border-radius:3px}
   .practice-pair-num{display:block;font:400 12px 'DM Sans',sans-serif;letter-spacing:.18em;text-transform:uppercase;color:var(--indigo);opacity:.75;margin-bottom:.4rem}
@@ -134,20 +134,10 @@ const HOMEPAGE_CSS = `
   .practice-pair-copy p{font:300 15.5px/1.7 'DM Sans',sans-serif;color:var(--text-secondary);margin:0 0 1rem}
   .practice-pair-copy p:last-child{margin-bottom:0}
 
-  /* wavy marquee banner — full-bleed, edge to edge, independent of the
-     centered photo+copy pair so it can span the whole screen and sit lower,
-     a continuous unmasked loop (no fade) across the entire viewport width.
-     Purely decorative — never intercept scroll/pointer input meant for the
-     copy box above it. */
-  .practice-marquee-stage{position:absolute;inset:0;pointer-events:none}
-  .practice-marquee{position:absolute;top:84%;left:0;width:100%;overflow:hidden;padding:.2rem 0;opacity:0}
-  .practice-marquee-track{display:inline-flex;animation:and-marquee 20s linear infinite}
-  .practice-wave-svg{display:block}
-
   @media (max-width:640px){
     .practice-figure{width:92vw;height:min(58vh,480px)}
     .practice-pair-item{flex-direction:column;text-align:center;gap:.85rem}
-    .practice-pair-photo{flex:0 0 auto;width:58%}
+    .practice-pair-photo{flex:0 0 auto;width:78%}
     .practice-pair-copy{max-height:min(52vh,440px);padding-right:0}
     .practice-pair-copy p{text-align:left;font-size:14.5px}
   }
@@ -174,8 +164,8 @@ const HOMEPAGE_CSS = `
   .testi-eyebrow-light{color:var(--indigo);opacity:.9}
   .testi-heading{width:clamp(340px,46vw,720px);margin:0 auto}
 
-  .testi-bird-block{position:relative;z-index:1;height:clamp(220px,32vw,420px);overflow:hidden}
-  .testi-bird{position:absolute;top:35%;left:-15%;width:clamp(150px,20vw,300px);height:auto;transform:translate(-50%,-50%);will-change:left,transform}
+  .testi-bird-block{position:relative;z-index:1;height:clamp(130px,18vw,240px);overflow:hidden}
+  .testi-bird{position:absolute;top:35%;left:-15%;width:clamp(90px,12vw,180px);height:auto;transform:translate(-50%,-50%);will-change:left,transform}
 
   .testi-wrap{position:relative;padding-top:5rem}
   .testi-hint{text-align:center;font-family:'Cormorant Garamond',serif;font-style:italic;font-size:15px;color:var(--text-secondary);margin:0 0 2.6rem}
@@ -334,12 +324,6 @@ const HOMEPAGE_BODY = `
               <span class="practice-word practice-word-being" id="pwBeing">being</span>
             </div>
           </div>
-        </div>
-
-        <div class="practice-marquee-stage">
-          <div class="practice-marquee" id="practiceMarquee1" aria-hidden="true"><div class="practice-marquee-track" id="marqueeRegulate"></div></div>
-          <div class="practice-marquee" id="practiceMarquee2" aria-hidden="true"><div class="practice-marquee-track" id="marqueeRelate"></div></div>
-          <div class="practice-marquee" id="practiceMarquee3" aria-hidden="true"><div class="practice-marquee-track" id="marqueeRise"></div></div>
         </div>
 
         <div class="practice-pair-stage">
@@ -580,9 +564,6 @@ const HOMEPAGE_SCRIPT = `
   const practicePair1 = document.getElementById('practicePair1');
   const practicePair2 = document.getElementById('practicePair2');
   const practicePair3 = document.getElementById('practicePair3');
-  const practiceMarquee1 = document.getElementById('practiceMarquee1');
-  const practiceMarquee2 = document.getElementById('practiceMarquee2');
-  const practiceMarquee3 = document.getElementById('practiceMarquee3');
 
   function practicePinProgress(){
     if (!practiceSection) return 0;
@@ -637,9 +618,6 @@ const HOMEPAGE_SCRIPT = `
       practicePair3.style.opacity = String(pair3Opacity);
       practicePair3.style.pointerEvents = pair3Opacity > 0.5 ? 'auto' : 'none';
     }
-    if (practiceMarquee1) practiceMarquee1.style.opacity = String(Math.max(0, pair1Opacity));
-    if (practiceMarquee2) practiceMarquee2.style.opacity = String(Math.max(0, pair2Opacity));
-    if (practiceMarquee3) practiceMarquee3.style.opacity = String(pair3Opacity);
   }
 
   // Testimonials: the bird flies from fully off-screen left to fully
@@ -675,54 +653,6 @@ const HOMEPAGE_SCRIPT = `
   window.addEventListener('scroll', onScroll, { passive: true });
   window.addEventListener('resize', updateHero);
   window.addEventListener('resize', updatePractice);
-  // build each pair's marquee: the text itself follows a wavy SVG path (via
-  // textPath), not just bobbing words on a flat line — two identical copies
-  // sit side by side so the and-marquee -50% translate loops seamlessly.
-  function buildWavePathD(totalWidth, baseline, amplitude, period){
-    let d = 'M0,' + baseline;
-    let x = 0;
-    let up = true;
-    while (x < totalWidth) {
-      const midX = x + period / 2;
-      const midY = up ? baseline - amplitude : baseline + amplitude;
-      const endX = x + period;
-      d += ' Q' + midX + ',' + midY + ' ' + endX + ',' + baseline;
-      x = endX;
-      up = !up;
-    }
-    return d;
-  }
-
-  function buildWaveMarquee(id, word, color){
-    const track = document.getElementById(id);
-    if (!track) return;
-    const totalWidth = 2400;
-    const baseline = 50;
-    const amplitude = 26;
-    const period = 260;
-    const height = 110;
-    const d = buildWavePathD(totalWidth, baseline, amplitude, period);
-    // Repeat the word enough times to safely overflow the wavy path's actual
-    // length (always a bit longer than totalWidth) — text beyond a
-    // textPath's length simply isn't rendered, so over-repeating is safe and
-    // guarantees no blank gap at the loop seam, however short the word is.
-    const unit = word + ' • ';
-    const approxCharWidth = 22; // px, italic Playfair Display 700 @ 34px incl. letter-spacing
-    const repeats = Math.max(12, Math.ceil((totalWidth * 1.6) / (unit.length * approxCharWidth)));
-    const text = unit.repeat(repeats);
-    function svgFor(pathId){
-      return '<svg class="practice-wave-svg" width="' + totalWidth + '" height="' + height + '" viewBox="0 0 ' + totalWidth + ' ' + height + '" xmlns="http://www.w3.org/2000/svg">' +
-        '<path id="' + pathId + '" d="' + d + '" fill="none"></path>' +
-        '<text font-family="Playfair Display, serif" font-style="italic" font-weight="700" font-size="34" fill="' + color + '" letter-spacing="1">' +
-        '<textPath href="#' + pathId + '" startOffset="0">' + text + '</textPath>' +
-        '</text>' +
-        '</svg>';
-    }
-    track.innerHTML = svgFor(id + '-path-a') + svgFor(id + '-path-b');
-  }
-  buildWaveMarquee('marqueeRegulate', 'Regulate', '#5b2a98');
-  buildWaveMarquee('marqueeRelate', 'Relate', '#5b2a98');
-  buildWaveMarquee('marqueeRise', 'Rise', '#5b2a98');
 
   updateHero();
   updatePractice();
