@@ -31,34 +31,34 @@ export default function SeasonsGrid() {
   }, []);
 
   return (
-    <div className="grid grid-cols-1 gap-[1.5px] sm:grid-cols-3">
+    <div className="flex flex-col gap-[1.5px]">
       {seasons.map((s, i) => (
         <div
           key={s.label}
           ref={(el) => {
             cardRefs.current[i] = el;
           }}
-          className="relative overflow-hidden border border-lavender border-l-4 border-l-transparent bg-white/62 p-9 backdrop-blur-md transition-colors hover:border-l-mint hover:bg-mint-light"
+          className="relative overflow-hidden border border-lavender border-l-4 border-l-transparent bg-white/62 p-10 backdrop-blur-md transition-colors hover:border-l-mint hover:bg-mint-light"
         >
           <div
             ref={(el) => {
               numRefs.current[i] = el;
             }}
-            className="pointer-events-none absolute -top-8 right-6 select-none font-serif text-[150px] font-black italic leading-none text-purple/5 will-change-transform"
+            className="pointer-events-none absolute -top-8 right-8 select-none font-serif text-[180px] font-black italic leading-none text-purple/5 will-change-transform"
           >
             {s.badge}
           </div>
-          <div className="relative">
+          <div className="relative max-w-[38rem]">
             <div className="mb-4 font-sans text-[10px] uppercase tracking-[0.18em] text-purple">
               {s.label}
             </div>
-            <div className="mb-4 font-serif text-xl font-bold leading-[1.25] text-plum">
+            <div className="mb-4 font-serif text-[28px] font-bold leading-[1.2] text-plum">
               {s.title}
             </div>
-            <p className="mb-6 font-sans text-sm font-light leading-[1.75] text-muted">
+            <p className="mb-6 font-sans text-base font-light leading-[1.8] text-muted">
               {s.desc}
             </p>
-            <div className="border-t border-lavender pt-5 font-quote text-lg italic text-purple">
+            <div className="border-t border-lavender pt-5 font-quote text-xl italic text-purple">
               {s.quote}
             </div>
           </div>
