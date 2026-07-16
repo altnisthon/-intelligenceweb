@@ -1,11 +1,37 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { seasons } from "@/lib/data";
 
 export default function SeasonsGrid() {
   const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
   const numRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const [inView, setInView] = useState<boolean[]>(() => seasons.map(() => false));
+
+  // "Pop up" entrance: each card starts slightly below and scaled down, then
+  // rises to rest as it scrolls into view — so it visibly detaches from the
+  // mist background instead of just fading in place.
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          const idx = cardRefs.current.indexOf(entry.target as HTMLDivElement);
+          if (idx === -1) return;
+          setInView((prev) => {
+            if (prev[idx]) return prev;
+            const next = [...prev];
+            next[idx] = true;
+            return next;
+          });
+          observer.unobserve(entry.target);
+        });
+      },
+      { threshold: 0.15, rootMargin: "0px 0px -8% 0px" }
+    );
+    cardRefs.current.forEach((card) => card && observer.observe(card));
+    return () => observer.disconnect();
+  }, []);
 
   useEffect(() => {
     let raf = 0;
@@ -38,7 +64,9 @@ export default function SeasonsGrid() {
           ref={(el) => {
             cardRefs.current[i] = el;
           }}
-          className="relative overflow-hidden border border-lavender border-l-4 border-l-transparent bg-white/62 p-10 backdrop-blur-md transition-colors hover:border-l-mint hover:bg-mint-light"
+          className={`relative overflow-hidden border border-lavender border-l-4 border-l-transparent bg-white/60 p-10 shadow-[0_18px_44px_-22px_rgba(30,24,38,0.28)] backdrop-blur-md transition-[background-color,border-color,opacity,transform] duration-700 ease-out hover:border-l-mint hover:bg-mint-light ${
+            inView[i] ? "translate-y-0 scale-100 opacity-100" : "translate-y-10 scale-[0.97] opacity-0"
+          }`}
         >
           <div
             ref={(el) => {
