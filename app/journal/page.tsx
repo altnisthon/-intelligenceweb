@@ -31,9 +31,8 @@ export default function JournalPage() {
           Notes on <span className="italic text-purple">understanding</span>.
         </h1>
         <p className="mb-16 max-w-xl font-sans text-base font-light leading-[1.8] text-muted">
-          This section is real infrastructure, placeholder content — swap the files in{" "}
-          <code className="text-purple">content/journal/</code> for real posts (and their cover
-          images) whenever you&apos;re ready.
+          Longer-form writing on self-awareness, emotional intelligence, and the patterns that
+          quietly run our lives.
         </p>
 
         {featured && (
