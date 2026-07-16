@@ -1,11 +1,23 @@
 export type Chip = { label: string; highlight?: boolean };
 
+export type ProgrammeParagraph = { label?: string; text: string };
+
+export type ProgrammeDetail = {
+  tagline?: string;
+  heading?: string;
+  paragraphs: ProgrammeParagraph[];
+  bulletsHeading?: string;
+  bullets?: string[];
+  closing?: string;
+};
+
 export type Programme = {
   badge: string;
   name: string;
   dmit: boolean;
   desc: string;
   chips: Chip[];
+  detail?: ProgrammeDetail;
 };
 
 export const individualJourneys: Programme[] = [
@@ -19,28 +31,36 @@ export const individualJourneys: Programme[] = [
       { label: "DMIT profiling" },
       { label: "Innate intelligence" },
     ],
-  },
-  {
-    badge: "02",
-    name: "Common Ground",
-    dmit: false,
-    desc: "Turn self-understanding into connection. We work on communication, boundaries and reading others — so you relate from a place of understanding rather than reaction.",
-    chips: [
-      { label: "Relate", highlight: true },
-      { label: "Relationships" },
-      { label: "Communication" },
-    ],
-  },
-  {
-    badge: "03",
-    name: "The Deep Work",
-    dmit: false,
-    desc: "The long game — gently reshaping the long-standing patterns that have quietly run your life, and rising into a more deliberate, aligned version of yourself.",
-    chips: [
-      { label: "Rise", highlight: true },
-      { label: "Pattern work" },
-      { label: "Alignment" },
-    ],
+    detail: {
+      heading: "How it works",
+      paragraphs: [
+        {
+          text: "We start with the fingerprint scan. It takes only a few minutes and is completely painless. What follows is the part that matters: a sit down session where we walk through your DMIT profile together, slowly, with room for your questions. You'll leave understanding how you take in the world, where your instincts lean, and which strengths come easily to you.",
+        },
+        { text: "From there, the work moves through the three stages." },
+        {
+          label: "Regulate.",
+          text: "We look at your own patterns of stress and reactivity, find your early warning signs, and build a small set of practices that suit how you are built rather than generic advice borrowed from someone else. The aim isn't to be calm all the time. It's to have a reliable way back to steady, so you're responding on purpose instead of on reflex.",
+        },
+        {
+          label: "Relate.",
+          text: "We turn that self understanding outward, into the relationships that actually matter to you. How you naturally give, receive, and communicate. The friction points you keep meeting. The conversations you've been avoiding, and the words to finally have them.",
+        },
+        {
+          label: "Rise.",
+          text: "We look at direction. The strengths you've been running on, the ones you quietly set down, and how to realign your work and your choices with who you actually are. Not becoming someone new, but becoming more deliberately yourself.",
+        },
+      ],
+      bulletsHeading: "You leave with",
+      bullets: [
+        "Your DMIT profile, decoded and explained.",
+        "Language for what you feel, and practices you can use straight away.",
+        "A clearer read on how you relate to the people who matter.",
+        "A sense of direction that fits your natural strengths rather than someone else's expectations.",
+      ],
+      closing:
+        "Best for: anyone starting out, or wanting an honest picture of themselves before deciding what comes next.",
+    },
   },
 ];
 
@@ -55,6 +75,16 @@ export const workshops: Programme[] = [
       { label: "Self-regulation" },
       { label: "Stress tools" },
     ],
+    detail: {
+      tagline: "If you're overwhelmed, reactive, or running on empty.",
+      paragraphs: [
+        {
+          text: "A hands on workshop in self regulation. We start by naming what stress actually does in the body, so you can catch it early rather than only noticing once you're already underwater. Then we build a small toolkit: ways to settle yourself, catch a spiral before it takes hold, and steady yourself before an exam, a presentation, or a difficult conversation. Everything is practised in the room, not just explained.",
+        },
+      ],
+      closing:
+        "You leave with: language for what you feel, practices you can use straight away, and a clearer sense of your own early warning signs.",
+    },
   },
   {
     badge: "02",
@@ -66,6 +96,16 @@ export const workshops: Programme[] = [
       { label: "Empathy" },
       { label: "Communication" },
     ],
+    detail: {
+      tagline: "If you keep hitting the same walls with other people.",
+      paragraphs: [
+        {
+          text: "Emotional intelligence is hard to learn alone, because it only exists between people. So this is practice, not theory. In a small, supportive group we work on the things that actually go wrong: being misread, avoiding the difficult conversation, mistaking someone's tone for something it wasn't. You'll practise reading others accurately, saying what you need without armour, and holding boundaries with warmth rather than force.",
+        },
+      ],
+      closing:
+        "You leave with: a clearer read on your own relational patterns, and language for the conversations you've been avoiding.",
+    },
   },
   {
     badge: "03",
@@ -77,6 +117,16 @@ export const workshops: Programme[] = [
       { label: "Confidence" },
       { label: "Self-resilience" },
     ],
+    detail: {
+      tagline: "If you go quiet in rooms where you should be heard.",
+      paragraphs: [
+        {
+          text: "A playful workshop with a serious idea underneath it. Presence isn't something you perform. What people read as 'aura' is the outward sign of an inward state: someone settled in themselves, not performing for approval. So we build it from the inside, working on self resilience, the inner critic, recovering from setbacks, and how you carry yourself when the room is watching. Light in tone, because confidence work gets self conscious fast when it's treated too solemnly.",
+        },
+      ],
+      closing:
+        "You leave with: a steadier sense of yourself, a way back from setbacks, and presence that comes from being settled rather than performing.",
+    },
   },
 ];
 

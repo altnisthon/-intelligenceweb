@@ -77,10 +77,65 @@ export default function TrainingsTabs() {
               </div>
               {isOpen && (
                 <div className="border-t border-lavender bg-lavender/20 px-6 py-7 md:px-9">
-                  <p className="max-w-[42rem] font-sans text-sm font-light leading-[1.7] text-muted">
-                    More on {p.name} — placeholder copy for now. This is where format, duration,
-                    session structure, pricing and who it&rsquo;s best suited for will go.
-                  </p>
+                  <div className="flex max-w-[42rem] flex-col gap-4">
+                    {p.detail?.tagline && (
+                      <p className="m-0 font-serif text-lg italic text-purple">
+                        {p.detail.tagline}
+                      </p>
+                    )}
+                    {p.detail?.heading && (
+                      <div className="font-sans text-[10px] uppercase tracking-[0.18em] text-purple">
+                        {p.detail.heading}
+                      </div>
+                    )}
+                    {(p.detail?.paragraphs ?? []).map((para, i) => (
+                      <p
+                        key={i}
+                        className="m-0 font-sans text-sm font-light leading-[1.75] text-muted"
+                      >
+                        {para.label && (
+                          <span className="font-serif font-bold not-italic text-plum">
+                            {para.label}{" "}
+                          </span>
+                        )}
+                        {para.text}
+                      </p>
+                    ))}
+                    {p.detail?.bullets && (
+                      <div className="mt-1">
+                        {p.detail.bulletsHeading && (
+                          <div className="mb-3 font-sans text-[10px] uppercase tracking-[0.18em] text-purple">
+                            {p.detail.bulletsHeading}
+                          </div>
+                        )}
+                        <ul className="flex flex-col gap-2">
+                          {p.detail.bullets.map((b) => (
+                            <li
+                              key={b}
+                              className="flex gap-3 font-sans text-sm font-light leading-[1.7] text-muted"
+                            >
+                              <span className="mt-[3px] flex-none font-serif text-sm text-purple">
+                                ◇
+                              </span>
+                              <span>{b}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
+                    {p.detail?.closing && (
+                      <p className="m-0 font-sans text-sm font-light italic leading-[1.7] text-muted">
+                        {p.detail.closing}
+                      </p>
+                    )}
+                    {!p.detail && (
+                      <p className="m-0 font-sans text-sm font-light leading-[1.7] text-muted">
+                        More on {p.name} — placeholder copy for now. This is where format,
+                        duration, session structure, pricing and who it&rsquo;s best suited for
+                        will go.
+                      </p>
+                    )}
+                  </div>
                 </div>
               )}
             </div>
