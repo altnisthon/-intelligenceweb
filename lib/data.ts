@@ -83,27 +83,51 @@ export const workshops: Programme[] = [
 export const seasons = [
   {
     badge: "01",
-    label: "Youth · Ages 14–19",
+    label: "Youth · 14–19",
     title: "Finding footing before the world speeds up",
-    desc: "Identity, pressure, and the first real decisions about who to become. We give teenagers language for what they feel and evidence of what they're capable of.",
-    quote: '"I didn\'t know I was allowed to be good at this."',
-    wide: true,
+    question: "“Am I good enough?”",
+    body: [
+      "This is the age of being measured constantly and understood rarely. Grades sort them, peers rank them, and adults ask what they want to be before they've had the chance to find out who they are. Most of that pressure lands as one question they can't answer, and without language for what they feel, it comes out as withdrawal, defiance, anxiety, or a shrug.",
+      "What changes things at this age isn't motivation. It's evidence. A teenager who can see their own strengths laid out, not as praise but as something real and observable, has ground to stand on that a bad exam result can't take away. It gently shifts the question from am I smart enough? to how am I smart? And it offers them words for their inner world, which is often the first time anyone has. Self awareness at this age is quietly protective. It's much harder to be defined by other people's yardsticks when you already have a sense of your own shape.",
+    ],
+    checklist: [
+      "Naming what you're feeling instead of shutting down.",
+      "Picking subjects and paths that suit how you actually learn, rather than what looks impressive.",
+      "Noticing which settings drain you and building your week around that.",
+      "Learning to recover from a bad result without letting it decide who you are.",
+    ],
   },
   {
     badge: "02",
     label: "Young Adults · 20–35",
     title: "Building a life on your own terms",
-    desc: "Career, relationships, and the quiet question of whether you're living your own life or someone else's expectations.",
-    quote: '"I finally understand why the \'obvious\' path never fit."',
-    wide: false,
+    question: "“Is this life actually mine?”",
+    body: [
+      "The decade where so much gets decided and so little feels certain. Career, partner, city, whether to stay on the track you were placed on. The quiet ache here is borrowed ambition. You realise you've been chasing a life that made sense to your parents, your peers, or your eighteen year old self, and reaching it hasn't felt like much of anything. Add comparison at scale, and it's easy to be busy, capable, successful, and quietly lost.",
+      "Self knowledge is what turns that fog into something you can actually decide from. When you understand how you're wired, what genuinely energises you, how you work best, what you need in a relationship rather than what you were told to want, you stop optimising for a life you don't want and start choosing with your eyes open. It doesn't make the choices easy. It makes them yours, and that's the difference between a hard decision and one that haunts you.",
+    ],
+    checklist: [
+      "Saying no to the offer that looks right on paper but doesn't fit how you work.",
+      "Asking for what you need in a relationship, in plain words, before resentment does it for you.",
+      "Choosing a role for the way it uses your strengths, not just the title.",
+      "Setting your own measure of a good year, then actually checking it.",
+    ],
   },
   {
     badge: "03",
-    label: "Mid-Life · 35–55",
+    label: "Mid-life · 35–55",
     title: "Reassessing without starting over",
-    desc: "The successful, restless middle — where the goal shifts from achieving more to living more deliberately with what matters.",
-    quote: '"I wasn\'t burnt out. I was misaligned."',
-    wide: false,
+    question: "“Is this it?”",
+    body: [
+      "The successful, restless middle. From the outside it works: the career, the family, the years of competence. Inside there's a low hum you can't quite silence, and it's disorienting precisely because nothing is obviously wrong. This is also the most demanding season structurally, with responsibility at its peak, ageing parents, growing children, and a narrowing sense of time. The usual response is to grit through it or to blow something up. Both cost a great deal.",
+      "What's needed here is rarely reinvention. It's realignment, and that begins with knowing which parts of your life are genuinely yours and which are simply momentum. Self knowledge lets you tell the difference. It shows you the strengths you've been running on and the ones you quietly set down twenty years ago, and it gives you a basis for adjusting course deliberately rather than dramatically. Most people at this stage don't need to start over. They need to stop spending their energy against their own grain.",
+    ],
+    checklist: [
+      "Changing how you work rather than walking away from what you built.",
+      "Handing back the responsibilities you took on out of habit.",
+      "Letting your child be understood on their own terms instead of managed on yours.",
+      "Reclaiming one strength you set down years ago and putting it back into use.",
+    ],
   },
 ];
 

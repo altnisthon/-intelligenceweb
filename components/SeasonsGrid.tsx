@@ -76,18 +76,35 @@ export default function SeasonsGrid() {
           >
             {s.badge}
           </div>
-          <div className="relative max-w-[38rem]">
+          <div className="relative max-w-[46rem]">
             <div className="mb-4 font-sans text-[10px] uppercase tracking-[0.18em] text-purple">
-              {s.label}
+              {s.badge} · {s.label}
             </div>
-            <div className="mb-4 font-serif text-[28px] font-bold leading-[1.2] text-plum">
+            <div className="mb-5 font-serif text-[28px] font-bold leading-[1.2] text-plum">
               {s.title}
             </div>
-            <p className="mb-6 font-sans text-base font-light leading-[1.8] text-muted">
-              {s.desc}
+            <p className="mb-6 font-serif text-2xl italic leading-[1.4] text-purple">
+              {s.question}
             </p>
-            <div className="border-t border-lavender pt-5 font-quote text-xl italic text-purple">
-              {s.quote}
+            <div className="flex flex-col gap-5 font-sans text-base font-light leading-[1.8] text-muted">
+              {s.body.map((para) => (
+                <p key={para} className="m-0">
+                  {para}
+                </p>
+              ))}
+            </div>
+            <div className="mt-7 border-t border-lavender pt-6">
+              <div className="mb-4 font-sans text-[10px] uppercase tracking-[0.18em] text-purple">
+                What it looks like
+              </div>
+              <ul className="flex flex-col gap-3">
+                {s.checklist.map((item) => (
+                  <li key={item} className="flex gap-3 font-sans text-[15px] font-light leading-[1.7] text-muted">
+                    <span className="mt-[2px] flex-none font-serif text-base text-purple">◇</span>
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
             </div>
           </div>
         </div>
