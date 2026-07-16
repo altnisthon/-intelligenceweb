@@ -415,7 +415,7 @@ export default function AboutStory() {
             <Reveal as="div" className="mt-2 flex flex-col items-start gap-1 border-l-2 border-orchid/60 pl-6">
               <p className="m-0 font-serif text-[clamp(20px,2.4vw,26px)] italic leading-[1.4] text-plum">
                 Because when people finally understand themselves, they stop trying to become someone else
-                — <span className="text-purple">and begin becoming more of who they were designed to be.</span>
+                and <span className="text-purple">begin to become who they were designed to be.</span>
               </p>
             </Reveal>
 
