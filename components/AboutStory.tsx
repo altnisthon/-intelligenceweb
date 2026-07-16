@@ -233,7 +233,7 @@ export default function AboutStory() {
             </h1>
           </Reveal>
           <Reveal delay={180}>
-            <p className="mx-auto max-w-[620px] font-quote text-[clamp(22px,2.6vw,30px)] italic leading-[1.5] text-purple">
+            <p className="mx-auto max-w-[620px] font-serif text-[clamp(22px,2.6vw,30px)] italic leading-[1.5] text-purple">
               {openLines[0]}
               <br />
               {openLines[1]}
@@ -253,7 +253,7 @@ export default function AboutStory() {
 
           <Reveal
             as="div"
-            className="my-4 flex flex-col gap-2 border-l-2 border-orchid/60 pl-6 font-quote text-[clamp(20px,2.4vw,26px)] italic leading-[1.5] text-plum"
+            className="my-4 flex flex-col gap-2 border-l-2 border-orchid/60 pl-6 font-serif text-[clamp(20px,2.4vw,26px)] italic leading-[1.5] text-plum"
           >
             {labelLines.map((line) => (
               <p key={line} className="m-0">
@@ -298,7 +298,7 @@ export default function AboutStory() {
 
           <Reveal
             as="p"
-            className="my-2 text-center font-quote text-[clamp(21px,2.6vw,28px)] italic leading-[1.5] text-purple"
+            className="my-2 text-center font-serif text-[clamp(21px,2.6vw,28px)] italic leading-[1.5] text-purple"
           >
             There isn&apos;t one right way to be human.
           </Reveal>
@@ -315,14 +315,13 @@ export default function AboutStory() {
               className="absolute bottom-2 left-[3px] top-2 w-px"
               style={{ background: "linear-gradient(to bottom, rgba(91,42,152,.5), rgba(202,144,220,.5))" }}
             />
-            {chain.map((line, i) => (
+            {chain.map((line) => (
               <p key={line} className="relative m-0 pb-5 text-plum">
                 <span
                   aria-hidden
                   className="absolute -left-7 top-[0.4em] h-2 w-2 rounded-full bg-purple"
                 />
                 {line}
-                {i < chain.length - 1 && <span className="ml-1 text-orchid"> &rarr;</span>}
               </p>
             ))}
           </Reveal>
@@ -337,10 +336,8 @@ export default function AboutStory() {
             <span aria-hidden className="block font-serif text-[56px] font-black italic leading-none text-orchid">
               &ldquo;
             </span>
-            <p className="mx-auto max-w-[520px] font-quote text-[clamp(24px,3.2vw,34px)] italic leading-[1.4] text-plum">
-              The world doesn&apos;t need more labels.
-              <br />
-              It needs more understanding.
+            <p className="mx-auto max-w-[560px] font-serif text-[clamp(24px,3.2vw,34px)] italic leading-[1.4] text-plum">
+              The world doesn&apos;t need more labels — it needs more understanding.
             </p>
           </Reveal>
 
@@ -364,7 +361,7 @@ export default function AboutStory() {
               The Founder
             </Reveal>
             <Reveal delay={80}>
-              <h2 className="mb-6 font-quote text-[clamp(28px,4vw,42px)] font-semibold leading-[1.1] text-plum">
+              <h2 className="mb-6 font-serif text-[clamp(28px,4vw,42px)] font-bold leading-[1.1] text-plum">
                 A note from the founder.
               </h2>
             </Reveal>
@@ -377,7 +374,7 @@ export default function AboutStory() {
           </div>
 
           <div className="flex flex-col gap-7 font-sans text-lg font-light leading-[1.85] text-muted">
-            <Reveal as="p" className="font-quote text-[clamp(22px,2.8vw,30px)] italic leading-[1.5] text-purple">
+            <Reveal as="p" className="font-serif text-[clamp(22px,2.8vw,30px)] italic leading-[1.5] text-purple">
               I was never interested in labels. I was interested in people.
             </Reveal>
 
