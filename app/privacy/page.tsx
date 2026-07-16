@@ -33,9 +33,6 @@ export default function PrivacyPage() {
   return (
     <section className="px-6 py-24 md:px-10">
       <Container size="md">
-        <div className="mb-4 font-sans text-[10.5px] uppercase tracking-[0.18em] text-purple">
-          Legal
-        </div>
         <h1 className="mb-10 font-serif text-[clamp(28px,4vw,42px)] font-bold leading-[1.1] text-plum">
           Privacy Notice
         </h1>
