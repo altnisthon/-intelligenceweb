@@ -123,21 +123,38 @@ const HOMEPAGE_CSS = `
      sibling still fully captures wheel/pointer events unless disabled, which
      stole scroll input meant for the visible pair's copy box. JS flips this
      to 'auto' only on the currently-visible pair, alongside its opacity. */
-  .practice-pair-item{position:absolute;display:flex;align-items:center;gap:2.5rem;opacity:0;pointer-events:none;max-width:1680px;width:100%;padding:0 clamp(1.5rem,4vw,3rem)}
-  .practice-pair-photo{flex:0 0 clamp(380px,44vw,620px);border-radius:16px;overflow:hidden}
+  .practice-pair-item{position:absolute;display:flex;align-items:center;gap:2.75rem;opacity:0;pointer-events:none;max-width:1680px;width:100%;padding:0 clamp(1.5rem,4vw,3rem);transition:transform .15s ease-out}
+  .practice-pair-photo-wrap{position:relative;flex:0 0 clamp(380px,44vw,620px)}
+  .practice-pair-glow{position:absolute;inset:-14%;z-index:0;pointer-events:none;filter:blur(46px);opacity:.65;
+    background:radial-gradient(58% 58% at 32% 30%, var(--stage-accent-soft), transparent 72%);
+  }
+  .practice-pair-photo{position:relative;z-index:1;border-radius:22px;overflow:hidden;
+    box-shadow:0 34px 74px -32px rgba(30,24,38,.4), 0 0 0 1.5px var(--stage-accent-soft) inset;
+  }
   .practice-pair-photo img{display:block;width:100%;height:auto}
-  .practice-pair-copy{flex:1;min-width:0;max-height:min(82vh,680px);overflow-y:auto;overscroll-behavior:contain;padding-right:.75rem;scrollbar-width:thin;scrollbar-color:var(--indigo) transparent}
+  /* content, not chrome: overflow-y:auto lets the copy scroll internally
+     when the text genuinely doesn't fit the pinned viewport, but no
+     overscroll-behavior — once this box's own scroll is exhausted (or it
+     never needed to scroll at all), the wheel input must fall through to
+     drive the pinned page scroll, not get trapped here. */
+  .practice-pair-copy{flex:1;min-width:0;max-height:min(82vh,680px);overflow-y:auto;padding-right:.75rem;scrollbar-width:thin;scrollbar-color:var(--stage-accent,var(--indigo)) transparent}
   .practice-pair-copy::-webkit-scrollbar{width:5px}
-  .practice-pair-copy::-webkit-scrollbar-thumb{background:var(--indigo);opacity:.4;border-radius:3px}
-  .practice-pair-num{display:block;font:400 12px 'DM Sans',sans-serif;letter-spacing:.18em;text-transform:uppercase;color:var(--indigo);opacity:.75;margin-bottom:.4rem}
-  .practice-pair-label{font-family:'Playfair Display',serif;font-weight:700;font-size:clamp(26px,3.1vw,36px);color:var(--ink);margin-bottom:1rem;display:inline-block}
+  .practice-pair-copy::-webkit-scrollbar-thumb{background:var(--stage-accent,var(--indigo));opacity:.4;border-radius:3px}
+  .practice-pair-num{display:block;font:400 12px 'DM Sans',sans-serif;letter-spacing:.18em;text-transform:uppercase;color:var(--stage-accent,var(--indigo));opacity:.85;margin-bottom:.4rem}
+  .practice-pair-label{font-family:'Playfair Display',serif;font-weight:700;font-size:clamp(26px,3.1vw,36px);color:var(--ink);display:inline-block}
+  .practice-pair-rule{display:block;width:44px;height:3px;margin:.7rem 0 1.15rem;border-radius:2px;background:var(--stage-accent,var(--indigo))}
   .practice-pair-copy p{font:300 15.5px/1.7 'DM Sans',sans-serif;color:var(--text-secondary);margin:0 0 1rem}
   .practice-pair-copy p:last-child{margin-bottom:0}
+
+  .practice-stage-dots{position:absolute;top:5.5%;left:50%;transform:translateX(-50%);z-index:5;display:flex;gap:12px}
+  .practice-stage-dot{width:7px;height:7px;border-radius:50%;background:rgba(91,42,152,.2);transition:background .45s ease,transform .45s ease}
+  .practice-stage-dot.active{transform:scale(1.5)}
 
   @media (max-width:640px){
     .practice-figure{width:92vw;height:min(58vh,480px)}
     .practice-pair-item{flex-direction:column;text-align:center;gap:.85rem}
-    .practice-pair-photo{flex:0 0 auto;width:78%}
+    .practice-pair-photo-wrap{flex:0 0 auto;width:78%}
+    .practice-pair-rule{margin-left:auto;margin-right:auto}
     .practice-pair-copy{max-height:min(52vh,440px);padding-right:0}
     .practice-pair-copy p{text-align:left;font-size:14.5px}
   }
@@ -326,32 +343,50 @@ const HOMEPAGE_BODY = `
           </div>
         </div>
 
+        <div class="practice-stage-dots" aria-hidden="true">
+          <span class="practice-stage-dot" id="practiceDot1" style="background:var(--indigo)"></span>
+          <span class="practice-stage-dot" id="practiceDot2" style="background:var(--wisteria)"></span>
+          <span class="practice-stage-dot" id="practiceDot3" style="background:#7fae5a"></span>
+        </div>
+
         <div class="practice-pair-stage">
-          <div class="practice-pair-item" id="practicePair1">
-            <div class="practice-pair-photo"><img src="/hero/blood.png" alt=""></div>
+          <div class="practice-pair-item" id="practicePair1" style="--stage-accent:#5b2a98;--stage-accent-soft:rgba(91,42,152,.24)">
+            <div class="practice-pair-photo-wrap">
+              <div class="practice-pair-glow"></div>
+              <div class="practice-pair-photo"><img src="/hero/blood.png" alt=""></div>
+            </div>
             <div class="practice-pair-copy">
               <span class="practice-pair-num">01</span>
               <span class="practice-pair-label">Regulate</span>
+              <span class="practice-pair-rule"></span>
               <p>Everything starts here, because nothing else works without it. When your nervous system is braced for threat - overwhelmed, reactive, flooded - the thinking, feeling parts of you go quiet. You can't connect well, decide well, or grow from that place. Regulate is the skill of coming back: noticing your own signals early and returning yourself to steady ground before the storm makes your choices for you.</p>
               <p>It's worth being clear about what this isn't. Regulation isn't forcing yourself to be calm, and it isn't numbing what you feel. It's the opposite; it's feeling clearly enough to respond on purpose rather than on reflex. The work is quiet and practical: learning your early warning signs, knowing your particular triggers, and finding the specific routes back to calm that actually work for you. That last part matters, because the generic advice ("just breathe") lands differently depending on how you're built. This is where your DMIT profile earns its place, it shows how you take in and process the world, so your way back to steady is tailored to your wiring, not borrowed from someone else's.</p>
               <p>Master this and you've built the foundation the other two stages stand on. Skip it, and every relationship and every ambition ends up running on an unstable base.</p>
             </div>
           </div>
-          <div class="practice-pair-item" id="practicePair2">
-            <div class="practice-pair-photo"><img src="/hero/heart.png" alt=""></div>
+          <div class="practice-pair-item" id="practicePair2" style="--stage-accent:#ca90dc;--stage-accent-soft:rgba(202,144,220,.28)">
+            <div class="practice-pair-photo-wrap">
+              <div class="practice-pair-glow"></div>
+              <div class="practice-pair-photo"><img src="/hero/heart.png" alt=""></div>
+            </div>
             <div class="practice-pair-copy">
               <span class="practice-pair-num">02</span>
               <span class="practice-pair-label">Relate</span>
+              <span class="practice-pair-rule"></span>
               <p>Once you can steady yourself, you can finally be with people, not managing your own storm while half-listening to theirs. Relate is the outward turn: meeting others as they actually are, rather than as your fears or old patterns assume them to be.</p>
               <p>Here's the quiet truth underneath it: most relational friction isn't really about the other person. It's our own reactivity colliding with theirs. When you're regulated, you see people more accurately, because you're no longer looking through the distortion of your own threat response. That's what makes connection possible, not charisma or technique, but presence. The work looks like listening to understand instead of to reply, catching the story you're telling about someone before you act on it, and communicating what you need without armour. And because how we connect is deeply individual, understanding your own relational wiring - how you naturally give, receive, and express - turns connection from anxious guesswork into something you can navigate with far less self-blame.</p>
               <p>This stage matters because relationships are the medium of nearly everything that gives life weight: your work, your family, your love. Relational skill compounds quietly over decades. And it's reciprocal by design, you were never meant to rise alone.</p>
             </div>
           </div>
-          <div class="practice-pair-item" id="practicePair3">
-            <div class="practice-pair-photo"><img src="/hero/head.png" alt=""></div>
+          <div class="practice-pair-item" id="practicePair3" style="--stage-accent:#7fae5a;--stage-accent-soft:rgba(127,174,90,.28)">
+            <div class="practice-pair-photo-wrap">
+              <div class="practice-pair-glow"></div>
+              <div class="practice-pair-photo"><img src="/hero/head.png" alt=""></div>
+            </div>
             <div class="practice-pair-copy">
               <span class="practice-pair-num">03</span>
               <span class="practice-pair-label">Rise</span>
+              <span class="practice-pair-rule"></span>
               <p>From a steady self and honest relationships, growth stops being a grind. Rise is where the whole journey points forward, where you take your natural strengths and use them deliberately, in your work, your choices, and the direction you set for your life.</p>
               <p>We hold this word carefully. Rising isn't climbing over other people, and it isn't chasing a polished, optimised version of you that doesn't exist. It's directional, not comparative, a return to who you already are, lived more fully and on purpose. That's why it lasts: growth that runs along the grain of your nature doesn't depend on willpower to sustain it, the way borrowed ambitions always do. The work is learning where your innate strengths actually lie, then aligning your direction with them and quietly letting go of definitions of success you were handed rather than chose. This is the moment your DMIT profile becomes less a mirror and more a compass.</p>
               <p>And this stage is what gives the other two a point. Regulation and connection without direction just make you a calm, well-related person drifting; Rise is what turns steadiness and belonging into a life that's actually going somewhere: yours.</p>
@@ -564,6 +599,9 @@ const HOMEPAGE_SCRIPT = `
   const practicePair1 = document.getElementById('practicePair1');
   const practicePair2 = document.getElementById('practicePair2');
   const practicePair3 = document.getElementById('practicePair3');
+  const practiceDot1 = document.getElementById('practiceDot1');
+  const practiceDot2 = document.getElementById('practiceDot2');
+  const practiceDot3 = document.getElementById('practiceDot3');
 
   function practicePinProgress(){
     if (!practiceSection) return 0;
@@ -606,18 +644,29 @@ const HOMEPAGE_SCRIPT = `
     // Only the pair that's actually visible should receive wheel/pointer
     // input — otherwise a fully-faded (opacity 0) sibling stacked in the
     // same spot silently eats scroll input meant for the visible one.
+    // A small scale-in rides along with the opacity crossfade so each pair
+    // visibly settles into place rather than just appearing.
     if (practicePair1) {
-      practicePair1.style.opacity = String(Math.max(0, pair1Opacity));
+      const o1 = Math.max(0, pair1Opacity);
+      practicePair1.style.opacity = String(o1);
+      practicePair1.style.transform = 'scale(' + (0.96 + o1 * 0.04).toFixed(3) + ')';
       practicePair1.style.pointerEvents = pair1Opacity > 0.5 ? 'auto' : 'none';
     }
     if (practicePair2) {
-      practicePair2.style.opacity = String(Math.max(0, pair2Opacity));
+      const o2 = Math.max(0, pair2Opacity);
+      practicePair2.style.opacity = String(o2);
+      practicePair2.style.transform = 'scale(' + (0.96 + o2 * 0.04).toFixed(3) + ')';
       practicePair2.style.pointerEvents = pair2Opacity > 0.5 ? 'auto' : 'none';
     }
     if (practicePair3) {
-      practicePair3.style.opacity = String(pair3Opacity);
+      const o3 = Math.max(0, pair3Opacity);
+      practicePair3.style.opacity = String(o3);
+      practicePair3.style.transform = 'scale(' + (0.96 + o3 * 0.04).toFixed(3) + ')';
       practicePair3.style.pointerEvents = pair3Opacity > 0.5 ? 'auto' : 'none';
     }
+    if (practiceDot1) practiceDot1.classList.toggle('active', pair1Opacity > 0.5);
+    if (practiceDot2) practiceDot2.classList.toggle('active', pair2Opacity > 0.5);
+    if (practiceDot3) practiceDot3.classList.toggle('active', pair3Opacity > 0.5);
   }
 
   // Testimonials: the bird flies from fully off-screen left to fully
