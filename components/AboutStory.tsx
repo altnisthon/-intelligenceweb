@@ -371,7 +371,7 @@ export default function AboutStory() {
                 alt="Founder of AND Intelligence"
                 fill
                 sizes="(min-width: 768px) 280px, 60vw"
-                className="object-cover"
+                className="object-cover object-top"
               />
             </Reveal>
           </div>
