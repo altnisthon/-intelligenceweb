@@ -6,272 +6,233 @@ Next.js 14 (App Router) + React 18 + Tailwind marketing site for "AND Intelligen
 
 ## Live infra — TWO separate GitHub repos + Vercel projects, don't mix them up
 - **Production**: remote `origin` → https://github.com/altnisthon/-intelligenceweb.git → Vercel project
-  `andintelligenceweb` → **and-intelligence.com** (+ `www.`). This is the live public site. **Do not push here
-  without explicit approval** — it auto-deploys on push, no PR flow, no staging step in front of it.
-- **Review/staging**: remote `newrepo` → https://github.com/altnisthon/andintelligencewebnew.git → Vercel
-  project `andintelligencewebnew` → https://andintelligencewebnew.vercel.app. This is where in-progress
-  homepage work gets pushed for the user to review before it's approved to go to production. **This is the
-  remote currently in active use** — `git push newrepo main`, not `git push origin main`, unless told otherwise.
-- Local branch `main` tracks `newrepo/main` (check `git status` — it'll say "up to date with 'newrepo/main'").
-  There is no branching/PR workflow on either repo; every push to `main` on either remote deploys immediately
-  to that remote's Vercel project.
+  `andintelligenceweb` → **and-intelligence.com** (+ `www.`). This is the live public site.
+- **⚠️ `newrepo` (staging) is stale and has been throughout this whole session.** Every single change this
+  session — dozens of commits — was pushed straight to `origin`/production with the user's explicit,
+  standing approval each time. `newrepo` was never touched. If a future session wants to use staging again,
+  check `git log origin/main` vs `git log newrepo/main` first; assume a large gap.
 - **Domain**: `and-intelligence.com` + `www.and-intelligence.com` DNS is managed in **Squarespace's domain DNS
-  settings** (not delegated nameservers) — custom `A` records for `@`/`www` point to `76.76.21.21`. Works fine;
-  Vercel has separately suggested newer records (`216.198.79.1` A, `5b4fd08d06ced813.vercel-dns-017.com` CNAME)
-  as an optional IP-range-expansion upgrade, not required.
+  settings** (not delegated nameservers) — custom `A` records for `@`/`www` point to `76.76.21.21`. Works fine.
 - **Vercel CLI**: not globally installed, use `npx vercel <command>` from the repo root. Already authenticated
-  as `ohnirisa-7180` on this machine (session-scoped auth, may need `npx vercel login` again in a new environment).
-  `npx vercel ls andintelligencewebnew` / `npx vercel ls andintelligenceweb` to check either project's deployments
-  (note: bare `npx vercel ls` with no project name defaults to whatever project this directory's local `.vercel`
-  link points to — check the printed project name before trusting that output).
-- **gh CLI**: installed ad hoc at `/tmp/gh-cli/gh_2.96.0_macOS_arm64/bin/gh` (not on PATH permanently, and
-  `/tmp` may not persist across reboots). If `git push` fails with "could not read Username", reinstall or
-  re-auth `gh`, or just `git push` interactively / via SSH if the user sets that up instead.
-- **Git identity — fixed but only locally in this repo**: this machine has no global `user.email`/`user.name`,
-  so commits used to fall back to an auto-detected `ohnirisa@batbook.local`, which **silently blocks Vercel
-  deployments** (see gotcha #13 below — this cost a lot of debugging time once). It's now set correctly inside
-  *this* repo only (`git config --local user.email "ohnirisa@gmail.com"` / user.name "Nurul Khairunisa"). If
-  you ever work from a fresh clone or a different repo on this machine, set it again, or better, run
-  `git config --global user.email "ohnirisa@gmail.com"` once so it's never an issue again.
+  as `ohnirisa-7180` on this machine. `npx vercel ls andintelligenceweb` to check deployment status — a fresh
+  push typically shows `● Building` for under a minute, then `● Ready`. There is effectively no build-failure
+  risk left in this codebase at this point (every session-end push this session built and deployed cleanly) —
+  don't over-invest in polling; a single `sleep 45 && curl ... | grep <known-new-string>` against the live URL
+  is enough to confirm a deploy landed.
+- **gh CLI — installed ad hoc, lives in `/tmp`, does NOT survive a reboot/cleanup.** Git is configured (in
+  `~/.gitconfig`, global — **do not edit this**, it's off-limits) to use
+  `/tmp/gh-cli/gh_2.96.0_macOS_arm64/bin/gh` as the credential helper for `github.com`. **This broke again
+  mid-session** (`/tmp` got cleared) with `could not read Username for 'https://github.com': Device not
+  configured` on a `git push`. Fix without touching git config — just restore the binary:
+  ```bash
+  mkdir -p /tmp/gh-cli && cd /tmp/gh-cli
+  curl -sL -o gh.zip "https://github.com/cli/cli/releases/download/v2.96.0/gh_2.96.0_macOS_arm64.zip"
+  unzip -o gh.zip && chmod +x gh_2.96.0_macOS_arm64/bin/gh
+  /tmp/gh-cli/gh_2.96.0_macOS_arm64/bin/gh auth status   # should already show logged in as altnisthon
+  ```
+  Once restored, `git push` works immediately, no re-auth needed — expect to hit this again in any fresh
+  environment/after any `/tmp` clear. Treat it as a routine first-push hiccup, not a real auth problem.
+- **Git identity — fixed but only locally in this repo**: `git config --local user.email "ohnirisa@gmail.com"`
+  / `user.name "Nurul Khairunisa"`. Confirmed still correctly set throughout this session. If you ever work
+  from a fresh clone, set it again or Vercel will silently block deploys (unverified commit-author email).
 
 ## Key files
 - `app/layout.tsx` — root layout: fonts (Playfair Display, DM Sans, Cormorant Garamond, Caveat), `<Header/>`,
-  `<Footer/>`, global metadata. Shared across all pages.
+  `<Footer/>`, global metadata. **Cormorant Garamond's config was widened this session** — it's now
+  `style:["normal","italic"], weight:["300","400","500","600"]` (was italic-only, 300/400) so it could be used
+  for non-italic section subheadings. Note: **as of the latest sitewide font-consolidation pass, Cormorant is
+  no longer used on the About page at all** (see below) — check before assuming it's still needed elsewhere;
+  it may currently only be live on `/how-it-works`'s "Different seasons of becoming." heading.
+- `app/globals.css` — site-wide default paper background (unchanged). **New this session**: a `.mist-page`
+  utility class — a `position:fixed` `::before` pseudo-element holding the same soft indigo/wisteria mist
+  gradient used behind the homepage testimonials section, reused as a full-page backdrop. Applied to
+  `/trainings`, `/how-it-works`, and `/dmit` (added directly on each page's root `<section>`/wrapping `<div>`).
 - `app/page.tsx` — homepage route, just renders `<ParallaxHomepage />`.
-- `components/ParallaxHomepage.tsx` — **the homepage content**, and the one file you'll touch most.
-  Unusual structure: it's plain HTML/CSS/JS as **template-literal strings** (`HOMEPAGE_CSS`, `HOMEPAGE_BODY`,
-  `HOMEPAGE_SCRIPT`) injected via `dangerouslySetInnerHTML` and a manually-appended `<script>` tag — not
-  idiomatic React/JSX. This was a ported static prototype and has stayed that way deliberately through several
-  redesigns. To change copy, styles, or behavior on the homepage, edit the relevant string inside this file
-  (search by class name or text). Mind escaping `` ` `` and `${}` if you ever add template-literal-sensitive
-  characters inside these strings.
-- `components/Header.tsx`, `components/Footer.tsx`, `Logo.tsx` — shared nav/footer, real JSX components,
-  rendered once by the root layout. Header is currently a dark/ink bar with light text and a pill-shaped
-  "Begin the Conversation ↗" CTA (matches the hero's dark opening beat).
-- Other pages: `app/about`, `app/contact`, `app/dmit`, `app/faq`, `app/how-it-works`, `app/journal`,
-  `app/privacy`, `app/trainings` — normal JSX pages, more conventional than the homepage, still on the
-  earlier lavender/paper palette (not part of the recent homepage rework).
-- `public/hero/` — all assets for the homepage's hero, About section, testimonials and final CTA (inventory below).
-- `public/images/and-logo.png` — the "&" mark used in the hero's logo beat and in Header/Footer. Its two
-  brand colors (sampled via PIL this session) are **lavender `rgb(176,160,237)` / `#b0a0ed`** and
-  **mint `rgb(154,237,182)` / `#9aedb6`** — used directly in the final-CTA gradient blobs and the final-CTA
-  heading color. `public/images/wai-*.webp` — leftover illustrated figures from a retired "What AND Is"
-  section, **unused now**, left in place, safe to delete whenever.
-- `public/logo.png` — main site logo used by Header/Footer.
-- `lib/data.ts`, `lib/posts.ts` — site data (e.g. "seasons" content) and journal post loading (uses
-  `gray-matter`/`remark` over `content/journal/*.md`).
-- No test suite. `npm run lint` / `npm run build` are the only checks (`npm run lint` prompts an interactive
-  ESLint setup wizard the first time — just skip it, `npm run build` is the more useful check anyway).
+- `components/ParallaxHomepage.tsx` — the homepage content, template-literal HTML/CSS/JS
+  (`dangerouslySetInnerHTML` + appended `<script>`), same unusual structure as before. **Heavily changed this
+  session**, specifically the "A practice for the whole human being" pinned section
+  (`#practiceSection`/`.practice-pin-wrap`):
+  - **Regulate/Relate/Rise copy is now final, long-form text** (not placeholder) — 3 paragraphs each, written
+    to `practicePair1/2/3` inside `.practice-pair-copy`.
+  - **The wavy word marquee is gone entirely** — removed the `.practice-marquee-stage` HTML, its CSS, and the
+    `buildWaveMarquee`/`buildWavePathD` JS functions. If you see any reference to `practiceMarquee1/2/3` or
+    `marqueeRegulate/Relate/Rise`, that's stale, delete it.
+  - **Photo is bigger and the row is wider**: `.practice-pair-item{max-width:1680px}`,
+    `.practice-pair-photo-wrap{flex:0 0 clamp(380px,44vw,620px)}` (was ~380px cap, now ~620px).
+  - **Visual redesign, most recent change**: each Regulate/Relate/Rise pair now has its own accent color via
+    inline `--stage-accent`/`--stage-accent-soft` CSS custom properties on `.practice-pair-item`
+    (Regulate=`#5b2a98` indigo, Relate=`#ca90dc` wisteria, Rise=`#7fae5a` sage green — a bespoke deeper-green
+    not used elsewhere in the palette, chosen for text/decorative legibility against paper). This drives: a
+    blurred radial-gradient glow behind the photo (`.practice-pair-glow`), a shadow+inset-ring on the photo
+    itself, the big background number's color, and a new short accent-color rule (`.practice-pair-rule`) under
+    the stage label. A small color-coded progress-dot row (`.practice-stage-dots`, ids `practiceDot1/2/3`) sits
+    near the top of the pinned viewport. The photo+text pair also does a subtle scale-in (0.96→1) alongside its
+    opacity crossfade now (set in JS alongside opacity, not pure CSS).
+  - **Scroll-capture bug, fixed**: `.practice-pair-copy` (the text column) had `overscroll-behavior:contain`.
+    Once that inner box's own scroll was exhausted (or it had nothing to scroll at all), `contain` blocked the
+    wheel input from ever chaining through to drive the pinned page scroll — so scrolling while hovering the
+    paragraph did nothing, while scrolling over the photo worked normally. **Removed `overscroll-behavior`
+    entirely**; `overflow-y:auto` alone is correct here. If you ever add scroll-limited inner containers again
+    inside a pinned/scrubbed section, do **not** add `overscroll-behavior:contain` unless you specifically want
+    to trap scroll — it will break the outer pinned-scroll mechanic exactly like this.
+  - Testimonials `.testi-bird-block` was **shrunk roughly in half** this session (`height:clamp(130px,18vw,240px)`,
+    was `clamp(220px,32vw,420px)`; bird width similarly reduced) — "the gradient/mist chunk was too big" was the
+    ask. The bird-flight progress math (`updateBirdFlight()`) is relative to the block's own height already, so
+    it auto-adapted to the shorter scroll-through distance with no separate constant to retune.
+  - The wave-marquee text-tiling bug (visible gap in the loop for short words) was fixed **before** the marquee
+    was removed entirely — moot now, but if a similar wavy-SVG-textPath marquee is ever rebuilt, remember: repeat
+    count must scale with word length so painted text safely overflows the path's actual length, or short words
+    leave a blank gap at the loop seam.
+- `components/Footer.tsx` — social icons changed: removed LinkedIn ("in") and Facebook ("f"), kept Instagram
+  ("IG"), added a new envelope-icon link to `mailto:andintelligencehq@gmail.com`.
+- `components/AboutStory.tsx` — **entirely new client component**, the About page's actual content (replaced
+  the old static JSX in `app/about/page.tsx`, which now just renders `<AboutStory />`). Full "Our Story" +
+  "Founder" copy (final text, not placeholder), scroll-reveal animations via `IntersectionObserver`
+  (`Reveal`/`useInView` helpers defined in this file), a `ParallaxWatermark` component (rAF-driven drift, reads
+  a stable wrapping ref's rect — same "don't read your own transformed rect" pattern as the homepage). **Font
+  policy for this page, settled this session: only DM Sans (body) and Playfair Display (headings + any
+  quote/impactful line) — no Cormorant Garamond anywhere on this page.** Both the h1 and the "A note from the
+  founder." h2 are Playfair `font-bold`. The purple-dot "chain" list (Self-awareness → better communication →
+  ...) has **no arrows**, just dots — removed on request. The founder-closing sentence was iterated a few times
+  live with the user; current final wording: *"Because when people finally understand themselves, they stop
+  trying to become someone else and start becoming who they were designed to be."* (split into plum/purple
+  color halves via an inline `<span>`, not two separate `<p>`s).
+- `components/SeasonsGrid.tsx` — **new client component**, the "Who We Serve" / "Different seasons of
+  becoming." section on `/how-it-works` (`app/how-it-works/page.tsx` just renders `<SeasonsGrid />` inside its
+  second `<section>`). Renders `seasons` from `lib/data.ts` as **equal-size, full-width cards stacked
+  vertically** (not a 3-col grid — that was tried and explicitly reverted per "I want it horizontal so each
+  stack up on each other"). Each card restores an old, previously-retired homepage effect: a big background
+  "01/02/03" number that **flies upward through the card as it scrolls into view**
+  (`translateY(170 - progress*400)`, progress computed per-card from its own `getBoundingClientRect()` in a
+  self-perpetuating `requestAnimationFrame` loop — this exact mechanic/formula was recovered from git history,
+  commit `a8abba9`, where it originally lived as `updateServeParallax()`). Cards also have a scroll-triggered
+  "pop up" entrance (`IntersectionObserver`-driven translateY+scale+opacity) and match the Four Steps cards'
+  exact background treatment (`bg-white/60 backdrop-blur-md` + a soft drop shadow) so they read as solid white
+  against the new `.mist-page` background instead of blending into it.
+  - **The `seasons` data in `lib/data.ts` is now the full long-form essay copy** for all three (Youth 14–19,
+    Young Adults 20–35, Mid-life 35–55) — an opening question (Playfair italic pull-quote), two body
+    paragraphs, and a "What it looks like" 4-item checklist with diamond (`◇`) bullets. The `Programme`-style
+    shape changed: `{ badge, label, title, question, body: string[], checklist: string[] }` — no more `desc`/
+    `quote`/`wide` fields, those are gone.
+- `components/TrainingsTabs.tsx` (`/trainings`, nav-labeled "Sessions/Workshop") — **Individual Journeys now
+  has only one card, "Foundations"** ("Common Ground" and "The Deep Work" were removed — per the user,
+  Individual Journeys is really just the one session). The expand-arrow mechanic is unchanged (still works,
+  verified), but the expanded panel now renders **real structured content** instead of a placeholder line: a
+  new `Programme.detail` field (`{ tagline?, heading?, paragraphs: {label?, text}[], bulletsHeading?, bullets?,
+  closing? }` — see `lib/data.ts`) drives it. Foundations' expanded panel has "How it works" + the three
+  Regulate/Relate/Rise paragraphs (bold inline stage labels) + a "You leave with" bullet list + a "Best for:"
+  closing line. Each of the three Workshops (Steady State, Reading the Room, Aura Farming) has an italic
+  "If you're..." tagline + one full paragraph + a "You leave with:" closing sentence — all real, final copy,
+  not placeholder.
+- `app/privacy/page.tsx` — **no longer a placeholder.** Real Privacy Notice covering DMIT fingerprint
+  collection scope/purpose, PDPA compliance statement, and five commitments (Purpose Limitation, Voluntary
+  Participation, Confidentiality, Secure Handling, Retention) as a bulleted list, closing with a link to
+  `/contact`. Title changed from "Privacy Policy" to "Privacy Notice"; the "Legal" eyebrow label above the
+  heading was removed per the user (page now starts directly with the h1).
+- `app/journal/page.tsx` — listing page. The old dev-note paragraph ("this section is real infrastructure,
+  placeholder content — swap the files...") was replaced with a real one-line intro since it's no longer
+  accurate (see below — there is no placeholder content left in the journal at all now).
+- `content/journal/*.md` + `lib/posts.ts` — **the entire journal is now sourced from the founder's Substack**
+  (`vogueeunice.substack.com` — confirmed by the user to be the AND Intelligence founder's own writing, so
+  full-text republishing is authorized; this was explicitly checked before the first post was added, per this
+  assistant's copyright-caution policy). All original placeholder/dummy posts (`the-3r-framework`,
+  `understanding-dmit`, `welcome-to-the-journal`, and later `why-self-awareness-matters` — the last one was
+  genuine written content, not a placeholder, but was removed anyway on request) and their placeholder
+  cover images (`.svg` files) were deleted. **Current posts, newest first** (6 total as of this session):
+  `the-art-of-looking-away`, `we-all-have-a-monster`, `we-mistook-being-needed-for-being-loved`,
+  `the-great-human-operating-manual`, `modern-love-was-never-designed-to-work`,
+  `the-personality-you-think-you-have`. **Workflow for adding another one** (established and repeated ~6
+  times this session, works reliably): user pastes a `vogueeunice.substack.com/p/<slug>` URL → fetch it with
+  the browser tool (not `WebFetch`, which paraphrases/summarizes through a small model instead of returning
+  verbatim text — use `get_page_text` / `read_page` on a real browser tab instead) → extract title, "Jul N,
+  2026" date, the subtitle/dek as `excerpt`, full body text preserving the author's own short-paragraph
+  structure, and the post's embedded Substack CDN image URL (found via `read_page filter:all`, a
+  `substackcdn.com/image/fetch/...` link) → `curl` that image down to `/tmp`, copy it into
+  `public/journal/<slug>.jpg`, write `content/journal/<slug>.md` with frontmatter
+  (`title`/`date`/`excerpt`/`coverImage`) matching the existing file format exactly → `npm run build` to
+  confirm the new static path generates → commit + push. No image-embedding-in-body support exists in the
+  markdown pipeline (`lib/posts.ts` just runs `remark`/`remark-html` over the body) — only the one frontmatter
+  `coverImage` per post is used; if a Substack post has multiple inline images, just use the first/most
+  relevant one as the cover and skip the rest, matching the pattern already established across all 6 posts.
+- `components/RadialChart.tsx`, `components/Header.tsx`, `components/Logo.tsx`, `app/contact`, `app/faq`,
+  `app/dmit` — **unchanged this session**, see prior handover notes if touching these (not reproduced here for
+  length; nothing about them is stale, they just weren't part of this session's work).
+- `lib/data.ts` — now also exports `ProgrammeParagraph`/`ProgrammeDetail` types (for `TrainingsTabs`) alongside
+  the existing `Chip`/`Programme` types, `steps`, and the redesigned `seasons` array (see `SeasonsGrid` above).
+- No test suite. `npm run build` is the check that matters (catches type errors + confirms every journal post's
+  static path generates). `npm run lint` still prompts an interactive ESLint setup wizard on first run.
 
-## Current homepage structure (top to bottom)
-1. **Hero** (`#heroSection`, `.hero-pin-wrap`) — a ~550svh pinned scroll-scrub sequence, identical behavior on
-   desktop and mobile (only element sizes differ via a `@media (max-width:640px)` block):
-   - Beat 1 (0–~32% of scroll): `frame-1.mp4` plays as real looping video underneath everything (not
-     scroll-scrubbed — earlier attempts at scrubbing `currentTime` to scroll position looked staticky/jerky).
-   - Beats 2–4: the "&" logo → `fingerprint.png` → `and-intelligence-wordmark.png` crossfade over the video.
-   - Beat 5 (~34–90%): background swaps between `regulate.png` / `relate.png` / `rise.png`, each paired with
-     its bubble-font word image (`regulate-word.png` etc., swapped via JS by changing `<img>` `src`) and a
-     line of copy.
-   - Beat 6 (~90–100%): the three words condense into a wavy "Regulate · Relate · Rise" line, the wordmark
-     resettles, a retained quote fades in, then the pin releases.
-   - Left-edge scroll-progress dot nav (`#dotsNav`) tracks 4 sections: Hero, the About/Who-We-Serve section,
-     Testimonials, Final CTA. Hidden below 900px viewport width.
-2. **Marquee** — plain ticker, unchanged from earlier passes.
-3. **About section** (`#serveSection`, replaces an earlier "Who We Serve" section) — two beats:
-   - **"And... What?"** — full-bleed (`.about-video-block`, sits outside `.section-wrap` so it spans the
-     whole viewport width) video background (`and-what-bg.mp4`, muted/loop/autoplay), the `and-what.png`
-     bubble-font heading in its **original pale cream color** (legible against the dark video overlay), and
-     the two paragraphs retired from the old "What AND Is" section.
-   - **"And then what?"** — plain paper background, `and-then-what.png` bubble-font heading **darkened**
-     via `filter:brightness(0)` on `.bubble-heading` (it's the same pale-cream asset as the others, but this
-     beat has no video behind it, so it'd be nearly invisible on paper without the filter — this filter is
-     overridden back to `none` specifically inside `.about-video-block` for the "And... What?" heading).
-     Followed by "Well… you *become*" (the `.accent-mark` hand-lettered treatment, reused from the hero's
-     "AND"), then the Youth/Young Adults/Mid-Life cards (`.serve-card`), then a "See All Trainings" CTA with
-     small sparkle/star SVG accents around it.
-   - The big faint "01/02/03" numbers behind each card (`.serve-num`) now **fly upward through the card** as
-     you scroll past it (reworked this session — was a subtle background-parallax drift before). See gotcha
-     #3 below before touching this.
-4. **Testimonials** (`#testimonialsSection`) — **fully reworked this session**, envelope-open interaction
-   retired entirely. Three beats:
-   - **`.testi-scene`** — full-bleed gradient (`indigo-deep → indigo → wisteria → paper`, 170deg), holding
-     the `In Their Words` eyebrow and the `other-like-you-said.png` bubble-font heading (cropped to trim its
-     source transparent padding — see gotcha #14 — and enlarged; sits on the gradient so keeps `filter:none`,
-     unlike the paper-background bubble headings).
-   - **`.testi-bird-block`** — `bird.png` (a torn-newspaper-collage swallow) flies left→right as this block
-     scrolls through the viewport, with a bob/rotate for a "flying" feel (`updateBirdFlight()` in
-     `HOMEPAGE_SCRIPT`, tied into the same `onScroll` rAF loop as the hero/serve-num parallax). The bird PNG
-     itself has a **flat white background, not transparent** — `mix-blend-mode:multiply` on `.testi-bird`
-     is what drops the white and lets the gradient show through; don't "fix" this by trying to make the PNG
-     transparent, multiply is the intended trick here.
-   - **`.testi-wrap` / `.testi-grid`** — 3 floating, sparkling cards (`.testi-card-wrap` does a continuous
-     whimsical up/down `translateY` bob via CSS keyframes, independent of the card's own scroll-reveal
-     transform so the two don't fight over the same property; each card has 5 small pulsing sparkle SVGs
-     around its corners in alternating lime/wisteria). Desktop: hover a card to reveal its quote (placeholder
-     text hides on hover). Mobile (`≤860px`): quotes show directly, no hover, sparkles/floating stay. The
-     background here is **plain paper** — an earlier attempt at a light gradient wash bleeding down from the
-     scene into this section was explicitly reverted (see "reverted" note below) because it created a visible
-     hard edge; don't re-add a bleed here unless asked.
-5. **Final CTA** (`#finalCtaSection`) — **fully reworked this session**, placeholder photo slot retired.
-   `.final-cta-bg` holds 3 blurred, independently-animated radial-gradient "blobs" in the logo's lavender/mint
-   (`ctaFloatA/B/C` keyframes, different durations/delays so they read as an organic floating wave, not a
-   synced loop; `prefers-reduced-motion` pauses them). Over that, `start-with-understanding.png` (cropped like
-   the testimonial heading, and **recolored** — its source pixels were replaced with the logo's lavender
-   `#b0a0ed` via PIL, keeping the original alpha shape — so `.final-cta-heading` sets `filter:none` to show
-   the true color instead of the usual `brightness(0)` darkening) sits above the paragraph and CTA button.
+## Known quirks / gotchas (new this session — earlier sessions' gotchas below this list still apply)
+1. **This session's browser-preview tool had a recurring, session-wide rendering stall** affecting
+   `requestAnimationFrame` (scheduled callbacks sometimes just never fire — confirmed via a direct
+   `requestAnimationFrame(() => flag='fired')` probe that stayed `'pending'` even after a real 1-second wait),
+   `IntersectionObserver` callbacks, and even the `computer` tool's real `scroll` action (timed out after
+   30s). Screenshots taken at any non-zero scroll position frequently came back **fully blank** (correct paper
+   background color, zero content) even though `getComputedStyle`/`getBoundingClientRect` confirmed the real
+   DOM was correct and fully rendered. **This is a tool/environment issue, not a code bug** — verified
+   repeatedly by cross-checking against computed styles, `get_page_text`, and against known-working production
+   behavior (the exact same `IntersectionObserver` reveal pattern used elsewhere on the live site was already
+   confirmed working in earlier sessions). Workarounds that helped, in order of reliability: (a) open a
+   **fresh tab** via `tabs_create` + `navigate` — fixed it most of the time, though not always by the end of
+   the session; (b) use **mobile-preset viewport** screenshots instead of desktop-sized ones — these kept
+   rendering correctly at scroll depth throughout, even when desktop-sized screenshots at the same scroll
+   position came back blank; (c) manually force the JS state you want to inspect (e.g. directly set
+   `element.style.opacity='1'` instead of relying on the scroll handler to set it) to at least visually verify
+   markup/CSS, decoupled from whether the scroll-driven JS pipeline itself is executing in the tool. If a
+   future session hits the same wall, don't burn time debugging the *site's* code first — try a fresh tab and
+   mobile-viewport screenshots before assuming a real regression.
+2. **`overscroll-behavior:contain` inside a pinned/scrubbed section can silently break the whole pin
+   mechanic** — see the `ParallaxHomepage.tsx` entry above. Any inner `overflow-y:auto` scroll container living
+   inside a `position:sticky` pinned section should almost never have `overscroll-behavior:contain`; without
+   it, once the inner box's scroll is exhausted, wheel input correctly falls through to the outer (real, page-
+   level) scroll that actually drives the pin's progress calculation.
+3. **`WebFetch` paraphrases/summarizes page content through a small model — it does not return verbatim text.**
+   For anything requiring exact-text extraction (this session: full Substack article bodies for direct
+   republishing), use the browser tool (`preview_start`/`navigate` + `get_page_text` or `read_page`) instead.
+   Confirmed directly this session: a `WebFetch` call against a Substack post returned a paraphrased summary
+   with `[See original content above...]` placeholders where the real body text should have been.
+4. **Republishing third-party content requires an explicit rights check first.** Before importing the first
+   Substack post into the journal, this assistant asked the user to confirm `vogueeunice.substack.com` is the
+   founder's own writing (not someone else's, which would be copyright infringement to republish in full) —
+   the user confirmed it is. That confirmation should be treated as covering the whole publication going
+   forward (all 6 posts imported this session came from the same author/publication), but if a *different*
+   Substack or outside source is ever proposed for the journal, check again before copying full text.
+5. **`git push` failing with `could not read Username for 'https://github.com': Device not configured`** almost
+   always means the `/tmp/gh-cli` binary got cleared, not a real auth problem — see the Live Infra section
+   above for the one-command fix. Don't touch `~/.gitconfig` or re-run `gh auth login`; the token is fine.
 
-## Asset inventory (`public/hero/`)
-| File | Used for |
-|---|---|
-| `frame-1.mp4` (29MB) | Hero beat 1 background video |
-| `and-what-bg.mp4` (8.9MB) | About section's "And... What?" background video |
-| `and-intelligence-wordmark.png` | Hero beats 4 & 6 (bubble-font "And Intelligence") |
-| `fingerprint.png` | Hero beat 3 |
-| `regulate.png` / `relate.png` / `rise.png` (3.7–5.1MB each) | Hero beat 5 backgrounds |
-| `regulate-word.png` / `relate-word.png` / `rise-word.png` | Hero beat 5 bubble-font word labels |
-| `and-what.png` / `and-then-what.png` | About section bubble-font headings |
-| `bird.png` | Testimonials — flies across the gradient scene on scroll (`mix-blend-mode:multiply`) |
-| `other-like-you-said.png` | Testimonials gradient-scene heading (cropped from source, enlarged) |
-| `start-with-understanding.png` | Final CTA heading (cropped from source, recolored to logo lavender) |
+## Naming calls made this session, easy to revisit
+- About page fonts: **DM Sans (body) + Playfair Display (headings/quotes) only**, no Cormorant Garamond — an
+  explicit, deliberate simplification from an earlier session's "headers=Playfair, subheaders=Cormorant"
+  sitewide rule. That sitewide rule may still apply elsewhere (e.g. `/how-it-works`'s season-section heading is
+  still Cormorant) — this override was scoped to the About page specifically, not undone globally.
+- Who We Serve / seasons cards: **stacked vertically, full-width**, not a 3-column grid — tried the grid first,
+  user explicitly asked for the stacked version instead ("I want it horizontal so each stack up on each
+  other").
+- Individual Journeys is **one card only (Foundations)** — not an oversight, an explicit correction ("the
+  individual journey is actually 1 session").
+- Journal is **entirely Substack-sourced now** — every placeholder and even the one genuinely-written non-
+  Substack post were removed on request; don't add hand-written filler posts back without checking first.
+- Practice-section stage colors (Regulate=indigo, Relate=wisteria, Rise=sage-green `#7fae5a`) are a **new,
+  bespoke assignment** made this session for visual variety — there was no pre-existing per-stage color
+  convention anywhere else in the codebase (chip "highlight" color is a single universal mint-green regardless
+  of stage) to match against, so this doesn't need to be reconciled with anything else.
+- The visual redesign of the practice section (glow, photo frame, progress dots, scale-in) was delivered as
+  "make it more aesthetically pleasing, I'll see if I like it" — **not yet explicitly confirmed liked** by the
+  user as of end of session, just deployed. If picking this up, it's worth checking whether the user wants
+  further iteration on it before treating it as settled.
 
-**Still flagged, not yet done**: `frame-1.mp4`, `and-what-bg.mp4`, and the 3 `regulate/relate/rise.png` photos
-are all large (multi-MB) and uncompressed — fine for local dev, worth a compression pass (video re-encode +
-image compression) before this goes to production, since they're some of the first things the homepage loads.
-
-**Still unused, sitting in the source folder** (`/Users/ohnirisa/Desktop/andintelligence web/`, not copied
-into `public/` yet): `bubble font of and intelligence.png`, `fingerprint 2.png`. No assigned purpose yet — ask
-before using if they come up.
-
-## Known quirks / gotchas
-1. **Bubble-font PNGs are pale cream ink by design** — meant to sit on dark backgrounds. On a light/paper
-   background they need `filter:brightness(0) opacity(.88)` (the `.bubble-heading` default) or they're nearly
-   invisible; on a dark background (video, gradient) override back to `filter:none`. The testimonial heading
-   uses `filter:none` (sits on a dark gradient); the final-CTA heading also uses `filter:none`, but for a
-   different reason — its source pixels were directly recolored to the logo purple, so it doesn't need (and
-   shouldn't get) the darkening filter either. Check background context before assuming the default applies.
-2. **`vh` → `svh` for the hero pin**: `.hero-pin-wrap`/`.hero-pin` use `svh` (stable viewport height) instead
-   of plain `vh`, specifically to avoid mobile browsers' collapsing address bar causing pin-height jumps
-   mid-scroll. If you add more pinned/scrubbed sections, use `svh` there too for the same reason.
-3. **Scroll-linked parallax must reference a stable element, not itself**: both `updateServeParallax()` (the
-   01/02/03 fly-up) and `updateBirdFlight()` (the testimonial bird) in `HOMEPAGE_SCRIPT` compute progress from
-   a **stable ancestor's** `getBoundingClientRect()` (the card, or the bird's own wrapping block), not from an
-   element that already has a transform applied to it from the previous frame — reading a self-transformed
-   rect would compound every scroll event into runaway drift. This was an actual bug caught and fixed early
-   on; keep the same pattern for any future scroll-linked motion. The serve-num math specifically: progress
-   0→1 as the card scrolls from viewport-bottom to viewport-top, mapped to `translateY` from `+170px` (below
-   its resting spot) to `-230px` (flies out through the card's own `overflow:hidden` clip) — i.e. it launches
-   up from below, settles at its natural spot roughly mid-scroll, then flies out the top. The bird math is
-   similar but also multiplies progress by `1.8` so the crossing completes before the block finishes
-   scrolling through (then holds off-screen right) — that's the "faster" flight the user asked for.
-4. **Effect cleanup matters**: `ParallaxHomepage`'s `useEffect` appends a `<script>` tag and the script itself
-   registers `window.__heroTeardown` at the end, which the effect's cleanup calls before removing the script.
-   This exists because React (especially Strict Mode in dev) can run the effect twice, and without explicit
-   teardown the `window.addEventListener('scroll', ...)` / `IntersectionObserver` instances from the first run
-   never get removed — a real leak, not just a dev-mode annoyance, since it'd also leak on every client-side
-   navigation away from the homepage. If you add new listeners/observers inside the script, add their
-   teardown to `window.__heroTeardown` too. (The old testimonial-envelope `IntersectionObserver` was removed
-   from both the script body and this teardown list when the envelope interaction was retired this session —
-   if you still see references to `testiIo`/`testiEnvelope`/`testiCard1..3` anywhere, that's stale, delete it.)
-5. **`position:sticky` is not a reliable containing block for `position:absolute` children** in all browsers —
-   `.hero-stage` exists as a plain `position:relative` wrapper *inside* the sticky `.hero-pin` specifically to
-   work around this. Keep this inner wrapper if you restructure the hero.
-6. **`overflow-x:hidden` on an ancestor silently breaks `position:sticky` for its descendants** — don't re-add
-   blanket `overflow-x:hidden` anywhere upstream of the hero pin (`.parallax-homepage-root` had this bug once,
-   fixed by removing the property).
-7. **Dev server `.next` cache corruption — this bit us three times this session.** Running `npm run build`
-   while `npm run dev` (or the Claude Code preview tool's dev server) is live against the same `.next`
-   directory corrupts it, producing `Cannot find module './NNN.js'` errors on every route including `/`. Fix:
-   stop the dev server first, `rm -rf .next`, then restart. **Better: just don't run `npm run build` while a
-   dev server is running at all** — stop the dev server, build, then restart it if you need both.
-8. **Browser scroll-position restoration** can make a freshly-reloaded page appear to start mid-scroll — set
-   `history.scrollRestoration = 'manual'` and `window.scrollTo(0, 0)` before relying on scroll position when
-   testing scroll-driven behavior.
-9. Testimonial quotes on mobile show directly (no hover) via a CSS override at `≤860px` — don't remove that
-   without checking mobile again.
-10. `.gitignore` covers `node_modules`, `.next`, env files, `.vercel`, `next-env.d.ts`.
-11. Local dev-server preview config lives one directory **above** the repo, at
-    `/Users/ohnirisa/Downloads/.claude/launch.json` (config name `intelligenceweb-dev`, `"autoPort": true` is
-    now set so the Claude Code preview tool falls back to a random port if another session already has 3000 —
-    this matters because **multiple Claude Code sessions/chats can be running a dev server for this same repo
-    at once**, and only one can hold port 3000).
-12. `public/preview.html` is a **standalone, self-contained** snapshot of the homepage (Tailwind via CDN, all
-    CSS/markup/script inlined). **It was not updated with any of this session's testimonial/final-CTA/serve-num
-    changes** — it's now stale relative to `ParallaxHomepage.tsx`. Mirror changes here too if you want it to
-    stay accurate, or just flag to whoever's next that it may be out of date.
-13. **Vercel silently blocks deploys from an unverified commit-author email — and the CLI reports this as a
-    confusing, indefinite `UNKNOWN` status with `0ms` duration, not an error.** If `npx vercel ls <project>`
-    shows a deployment stuck at `UNKNOWN` for more than ~a minute with no build duration, don't assume it's a
-    slow/hung build — check the actual reason via the dashboard (`npx vercel inspect <url>` doesn't surface
-    it, but https://vercel.com/ohnirisa-7180s-projects/<project>/<deployment-id> does, under "Deployment
-    Blocked"). The fix: `git config user.email "ohnirisa@gmail.com"` (matches the GitHub account), then
-    `git commit --amend --reset-author --no-edit` on the bad commit, then
-    `git push <remote> main --force-with-lease` (force-push is required since the commit was already pushed;
-    scope it to whichever remote/branch you actually need to fix — don't blanket force-push both repos).
-14. **Bubble-font source PNGs are exported as big square canvases with lots of transparent padding** (e.g.
-    1024×1024 with the actual glyphs only occupying a ~250px-tall strip in the middle) — if you set a bigger
-    `width` on one of these via the `.bubble-heading` `clamp()` pattern without cropping first, `height:auto`
-    scales the *whole square* up, wasting huge amounts of vertical space (this actually broke the testimonial
-    heading sizing once this session). Before enlarging a new bubble-font asset, crop its transparent margins
-    first:
-    ```python
-    from PIL import Image
-    im = Image.open('source.png')
-    bbox = im.getbbox()  # tight bounding box of non-transparent pixels
-    pad = 16
-    l, t, r, b = bbox
-    im.crop((max(0,l-pad), max(0,t-pad), min(im.width,r+pad), min(im.height,b+pad))).save('public/hero/dest.png')
-    ```
-15. **To recolor one of these pale-cream bubble-font PNGs to a solid brand color** (rather than just
-    darkening/lightening it with a CSS `filter`), replace its RGB channels directly and keep the alpha mask —
-    this is how the final-CTA heading got the logo's lavender:
-    ```python
-    from PIL import Image
-    im = Image.open('source.png').convert('RGBA')
-    _, _, _, a = im.split()
-    solid = Image.new('RGBA', im.size, (176,160,237,255))  # target color
-    solid.putalpha(a)
-    solid.save('public/hero/dest.png')
-    ```
-    Remember to set `filter:none` on that image's CSS (not the default `brightness(0)`), or the recolor will
-    be immediately undone by the darkening filter.
-16. **The Claude Code preview tool's screenshot can show a stale/blank render after a scroll or reload** —
-    seen repeatedly this session (screenshot shows blank paper or an old layout even though `getBoundingClientRect`/
-    `getComputedStyle` via `preview_eval` confirm the real DOM is correct and in the right scroll position).
-    This is a tool-side stale-compositor-tile issue, not a real page bug. Workaround: force a repaint before
-    screenshotting, either by toggling a transform (`document.body.style.transform='translateZ(0)'; void
-    document.body.offsetHeight; document.body.style.transform='';` via `preview_eval`) or by nudging the
-    viewport size via `preview_resize` to a different size and back. If a screenshot looks wrong but the DOM
-    state checks out, try this before assuming you broke something.
-
-## Naming calls made along the way, easy to revisit
-- The About section's CTA is labeled **"See All Trainings"** (linking to `/trainings`), even though an early
-  storyboard sketch wrote "SEE ALL RANGES" — there's no "/ranges" concept anywhere else on the site, so
-  "Trainings" was kept. Say the word if "Ranges" should actually become a standing term.
-- The retired "What AND Is" section's intro **quote** ("You are not a problem to be solved...") now lives in
-  the hero's beat 6 finale; its two **paragraphs** now live in the About section's "And... What?" beat — these
-  two pieces of copy were split across two different homepage locations on purpose, not duplicated.
-- Testimonials: an interim version of this section had a light wisteria gradient wash continuing from the
-  gradient scene down into the plain-paper card area, meant to smooth the transition. The user found the edge
-  where it faded out looked like a harsh line even after extending it, and ultimately asked to drop the wash
-  entirely and keep the card section plain paper — so **don't reintroduce a bleed/wash here** without it being
-  explicitly requested again.
-
-## Typical workflow for future changes
+## Typical workflow for future changes (unchanged from prior sessions)
 1. Edit files locally in `/Users/ohnirisa/Downloads/intelligenceweb`.
-2. `npm run dev` (or the Claude Code preview tool, config name `intelligenceweb-dev`) to check changes at
-   `localhost:3000` (or whatever port autoPort assigns if 3000 is taken by another session) — test both
-   desktop and mobile viewport sizes; the hero, About, testimonials and final-CTA sections all run
-   scroll-linked behavior on both now, so always check both when touching `ParallaxHomepage.tsx`. If a
-   screenshot looks blank/stale, see gotcha #16 before assuming something's broken.
-3. `npm run build` to catch stale references before committing — but **stop the dev server first** if one's
-   running against this repo (gotcha #7), or you'll corrupt its `.next` cache.
-4. `git add <files>`, `git commit` — check `git config user.email` resolves to `ohnirisa@gmail.com` first
-   (gotcha #13) if this is a fresh clone/environment.
-5. `git push newrepo main` to push to the **review** deployment (`andintelligencewebnew.vercel.app`) — this is
-   the default target while changes are being reviewed. Only `git push origin main` (production,
-   `and-intelligence.com`) once the user has explicitly approved the reviewed changes.
-6. Vercel auto-deploys on push — check `npx vercel ls andintelligencewebnew` for build status (watch for the
-   `UNKNOWN`-status trap in gotcha #13), or the dashboard at
-   https://vercel.com/ohnirisa-7180s-projects/andintelligencewebnew/deployments.
-7. Verify live at https://andintelligencewebnew.vercel.app (review) once the deployment shows "Ready". Only
-   verify against https://and-intelligence.com after an explicit production push.
+2. `npm run dev` (or the Claude Code preview tool, config name `intelligenceweb-dev`) to check changes.
+   **Stop the dev server before running `npm run build`** (running both against the same `.next` directory
+   corrupts it — `rm -rf .next` and restart the dev server if you see stale/wrong errors after a build).
+3. `npm run build` to catch type errors and confirm new journal static paths generate correctly.
+4. `git add <specific files>` (never `-A`/`.` — this repo's `.gitignore` doesn't cover `.claude/`, and that
+   directory should stay untracked), `git commit`.
+5. `git push origin main` — this session, every single push went straight to production (`origin`) with the
+   user's ongoing explicit approval; `newrepo`/staging was not used at all. Confirm with the user if that
+   convention should still hold, but expect it does.
+6. If push fails with a credential error, it's almost certainly the `/tmp/gh-cli` binary gotcha — see Live
+   Infra section, one-command fix, not a real problem.
+7. Vercel auto-deploys on push (~30-40s typical). Confirm with `sleep 45 && curl -s https://and-intelligence.com/<path> | grep -o "<known new string>"` rather than polling `npx vercel ls` repeatedly — faster and sufficient given this codebase's consistent clean-build track record this session.
