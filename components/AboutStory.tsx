@@ -365,11 +365,14 @@ export default function AboutStory() {
                 A note from the founder.
               </h2>
             </Reveal>
-            <Reveal delay={140} className="relative aspect-[4/5] w-full max-w-[280px] overflow-hidden rounded-[6px] border border-dashed border-purple/35 bg-lavender/60">
-              <ParallaxWatermark src="/fingerprint-purple.png" widthClass="w-[220px]" factor={-0.05} />
-              <div className="relative z-10 flex h-full items-center justify-center px-6 text-center font-sans text-xs uppercase tracking-[0.12em] text-purple/70">
-                Founder photo
-              </div>
+            <Reveal delay={140} className="relative aspect-[4/5] w-full max-w-[280px] overflow-hidden rounded-[6px] border border-purple/20 bg-lavender/60">
+              <Image
+                src="/founder.jpg"
+                alt="Founder of AND Intelligence"
+                fill
+                sizes="(min-width: 768px) 280px, 60vw"
+                className="object-cover"
+              />
             </Reveal>
           </div>
 

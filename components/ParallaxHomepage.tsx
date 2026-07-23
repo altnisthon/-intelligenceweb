@@ -22,6 +22,7 @@ const HOMEPAGE_CSS = `
   *{box-sizing:border-box;margin:0;padding:0}
   .parallax-homepage-root{font-family:'DM Sans',system-ui,sans-serif;color:var(--ink)}
   .parallax-homepage-root em{font-style:italic;color:var(--indigo)}
+  .about-video-block em{color:var(--wisteria)}
 
   /* ===== REVEAL-ON-SCROLL: simple fade + 12-16px rise, no rotation/scale drama ===== */
   [data-reveal]{opacity:0;transform:translateY(16px);transition:opacity .8s cubic-bezier(.16,1,.3,1),transform .8s cubic-bezier(.16,1,.3,1)}
@@ -313,7 +314,7 @@ const HOMEPAGE_BODY = `
     <div class="about-video-content">
       <img class="bubble-heading" src="/hero/and-what.png" alt="And... What?">
       <p class="about-para" data-reveal>Most self-help starts with what you want to change. We start with how you are built. AND sits at the intersection of self-awareness, resilience training &amp; DMIT, a fingerprint-based intelligence profiling; because lasting change comes from working <em>with</em> your nature, not against it.</p>
-      <p class="about-para" data-reveal>Every conversation is honest, specific &amp; quietly confident. No jargon, no bootcamp intensity, no promises of a fixed self. Just a clearer picture of who you are — &amp; the practical self-awareness to act on it.</p>
+      <p class="about-para" data-reveal>Every conversation is honest, specific &amp; quietly confident. No jargon, no bootcamp intensity, no promises of a fixed self. Just a clearer picture of who you are &amp; the practical self-awareness to act on it.</p>
     </div>
   </div>
 
