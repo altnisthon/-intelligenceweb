@@ -365,7 +365,7 @@ export default function AboutStory() {
                 A note from the founder.
               </h2>
             </Reveal>
-            <Reveal delay={140} className="relative aspect-[4/5] w-full max-w-[280px] overflow-hidden rounded-[6px] border border-purple/20 bg-lavender/60">
+            <Reveal delay={140} className="relative aspect-[3/5] w-full max-w-[280px] overflow-hidden rounded-[6px] border border-purple/20 bg-lavender/60">
               <Image
                 src="/founder.jpg"
                 alt="Founder of AND Intelligence"
