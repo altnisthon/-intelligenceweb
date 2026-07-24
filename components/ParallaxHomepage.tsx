@@ -267,7 +267,7 @@ const HOMEPAGE_BODY = `
 <section class="hero-pin-wrap" id="heroSection">
   <div class="hero-pin" id="heroPin">
     <div class="hero-stage">
-      <video class="hero-video" id="heroVideo" muted playsinline preload="auto" src="/hero/hero-video.mp4"></video>
+      <video class="hero-video" id="heroVideo" muted playsinline preload="auto" poster="/hero/hero-video-poster.jpg" src="/hero/hero-video.mp4"></video>
 
       <div class="hero-r-photos" id="heroRPhotos">
         <img class="hero-r-photo" id="heroRegulatePhoto" src="/hero/regulate.png" alt="">
@@ -309,7 +309,7 @@ const HOMEPAGE_BODY = `
 <!-- ABOUT: "And... What?" / "And then what?" -->
 <section class="who-we-serve" id="serveSection">
   <div class="about-video-block" data-reveal>
-    <video class="about-video-bg" muted loop playsinline autoplay src="/hero/and-what-bg.mp4"></video>
+    <video class="about-video-bg" id="aboutVideoBg" muted loop playsinline autoplay preload="auto" poster="/hero/and-what-bg-poster.jpg" src="/hero/and-what-bg.mp4"></video>
     <div class="about-video-overlay"></div>
     <div class="about-video-content">
       <img class="bubble-heading" src="/hero/and-what.png" alt="And... What?">
@@ -505,17 +505,35 @@ const HOMEPAGE_SCRIPT = `
   // scroll looked staticky/jerky since scroll position never advances as
   // smoothly as real video decode does. The video just plays continuously
   // underneath the logo/fingerprint/wordmark crossfade and fades out on cue.
-  if (heroVideo) {
-    heroVideo.loop = true;
+  //
+  // Some mobile browsers (notably iOS Safari in Low Power Mode) silently
+  // ignore the "autoplay" attribute even when muted+playsinline, and never
+  // fire 'canplay' until a user gesture happens — so alongside the normal
+  // readyState/canplay-triggered play(), we also retry once on the first
+  // touch/scroll/click anywhere on the page as a safety net.
+  const bgVideos = [heroVideo, document.getElementById('aboutVideoBg')].filter(Boolean);
+  const pendingPlay = [];
+  bgVideos.forEach(function(v){
+    v.loop = true;
     function tryPlay(){
-      const playPromise = heroVideo.play();
+      const playPromise = v.play();
       if (playPromise && playPromise.catch) { playPromise.catch(function(){}); }
     }
-    if (heroVideo.readyState >= 3) {
+    if (v.readyState >= 3) {
       tryPlay();
     } else {
-      heroVideo.addEventListener('canplay', tryPlay, { once: true });
+      v.addEventListener('canplay', tryPlay, { once: true });
     }
+    pendingPlay.push(tryPlay);
+  });
+  const gestureEvents = ['touchstart', 'scroll', 'click'];
+  function retryOnGesture(){
+    pendingPlay.forEach(function(fn){ fn(); });
+  }
+  if (pendingPlay.length) {
+    gestureEvents.forEach(function(evt){
+      window.addEventListener(evt, retryOnGesture, { passive: true, once: true });
+    });
   }
 
   function heroPinProgress(){
@@ -755,6 +773,9 @@ const HOMEPAGE_SCRIPT = `
     window.removeEventListener('scroll', onScroll);
     window.removeEventListener('resize', updateHero);
     window.removeEventListener('resize', updatePractice);
+    gestureEvents.forEach(function(evt){
+      window.removeEventListener(evt, retryOnGesture);
+    });
     io.disconnect();
     if (dotIo) { dotIo.disconnect(); }
   };

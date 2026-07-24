@@ -41,9 +41,14 @@ const config: Config = {
           from: { transform: "translateX(0)" },
           to: { transform: "translateX(-50%)" },
         },
+        "radial-pop": {
+          from: { opacity: "0", transform: "scale(0.96)" },
+          to: { opacity: "1", transform: "scale(1)" },
+        },
       },
       animation: {
         marquee: "marquee 34s linear infinite",
+        "radial-pop": "radial-pop .18s ease-out",
       },
     },
   },

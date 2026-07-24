@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 
 const INTELLIGENCES = [
@@ -40,7 +40,25 @@ const INTELLIGENCES = [
 
 export default function RadialChart() {
   const [pinned, setPinned] = useState<number | null>(null);
+  const [hovered, setHovered] = useState<number | null>(null);
   const radius = 42;
+
+  const activeIndex = pinned !== null ? pinned : hovered;
+  const active = activeIndex !== null ? INTELLIGENCES[activeIndex] : null;
+
+  function close() {
+    setPinned(null);
+    setHovered(null);
+  }
+
+  useEffect(() => {
+    if (pinned === null) return;
+    function onKey(e: KeyboardEvent) {
+      if (e.key === "Escape") setPinned(null);
+    }
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [pinned]);
 
   return (
     <div className="flex w-full max-w-[420px] flex-col items-center gap-4">
@@ -58,40 +76,24 @@ export default function RadialChart() {
           const angle = (-90 + i * (360 / INTELLIGENCES.length)) * (Math.PI / 180);
           const left = 50 + radius * Math.cos(angle);
           const top = 50 + radius * Math.sin(angle);
-          const isTopHalf = top < 50;
-          const isPinned = pinned === i;
+          const isActive = activeIndex === i;
 
           return (
-            <div
+            <button
               key={item.label}
-              className={`group absolute -translate-x-1/2 -translate-y-1/2 hover:z-30 ${
-                isPinned ? "z-30" : "z-0"
+              type="button"
+              onMouseEnter={() => setHovered(i)}
+              onMouseLeave={() => setHovered((h) => (h === i ? null : h))}
+              onFocus={() => setHovered(i)}
+              onBlur={() => setHovered((h) => (h === i ? null : h))}
+              onClick={() => setPinned((p) => (p === i ? null : i))}
+              className={`absolute -translate-x-1/2 -translate-y-1/2 whitespace-nowrap font-sans text-[9px] uppercase tracking-[0.16em] transition-colors ${
+                isActive ? "text-plum" : "text-purple/70 hover:text-purple"
               }`}
               style={{ left: `${left}%`, top: `${top}%` }}
             >
-              <button
-                type="button"
-                onClick={() => setPinned(isPinned ? null : i)}
-                className={`relative whitespace-nowrap font-sans text-[9px] uppercase tracking-[0.16em] transition-colors ${
-                  isPinned ? "text-plum" : "text-purple/70 group-hover:text-purple"
-                }`}
-              >
-                {item.label}
-              </button>
-
-              <div
-                className={`pointer-events-none absolute left-1/2 z-20 w-[15rem] -translate-x-1/2 rounded-md border border-lavender bg-paper p-4 text-left shadow-lg transition-opacity duration-150 ${
-                  isTopHalf ? "top-[calc(100%+10px)]" : "bottom-[calc(100%+10px)]"
-                } ${isPinned ? "opacity-100" : "opacity-0 group-hover:opacity-100"}`}
-              >
-                <div className="mb-1 font-sans text-[10px] uppercase tracking-[0.16em] text-purple">
-                  {item.label}
-                </div>
-                <p className="font-sans text-[13px] font-light leading-[1.6] text-muted">
-                  {item.desc}
-                </p>
-              </div>
-            </div>
+              {item.label}
+            </button>
           );
         })}
       </div>
@@ -102,6 +104,37 @@ export default function RadialChart() {
         </span>
         Hover or tap a strength to see what it means.
       </div>
+
+      {active && (
+        <div
+          className={`fixed inset-0 z-50 flex items-center justify-center px-6 transition-colors duration-150 ${
+            pinned !== null ? "bg-plum/40 backdrop-blur-sm" : "pointer-events-none bg-transparent"
+          }`}
+          onClick={close}
+        >
+          <div
+            className="pointer-events-auto relative w-full max-w-sm animate-radial-pop rounded-xl border border-lavender bg-paper p-7 text-left shadow-2xl"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {pinned !== null && (
+              <button
+                type="button"
+                onClick={close}
+                aria-label="Close"
+                className="absolute right-4 top-4 flex h-7 w-7 items-center justify-center rounded-full text-muted transition-colors hover:bg-mint/40 hover:text-plum"
+              >
+                ✕
+              </button>
+            )}
+            <div className="mb-2 font-sans text-[11px] uppercase tracking-[0.18em] text-purple">
+              {active.label}
+            </div>
+            <p className="font-sans text-[15px] font-light leading-[1.7] text-muted">
+              {active.desc}
+            </p>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
